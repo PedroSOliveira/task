@@ -1,16 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:task/constants/app_style.dart';
+import 'package:task/provider/radio_provider.dart';
 import 'package:task/widget/date_time_widget.dart';
 import 'package:task/widget/radio_widget.dart';
 import 'package:task/widget/text_field_widget.dart';
 
-class AddNewTaskModel extends StatelessWidget {
+class AddNewTaskModel extends ConsumerWidget {
   const AddNewTaskModel({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final radioCategory = ref.watch(radioProvider);
     return Container(
       padding: const EdgeInsets.all(30),
       height: MediaQuery.of(context).size.height * 0.80,
@@ -58,18 +61,21 @@ class AddNewTaskModel extends StatelessWidget {
                 child: RadioWidget(
                   categoryColor: Colors.green,
                   titleRadio: 'Trabalho',
+                  valueInput: 1,
                 ),
               ),
               Expanded(
                 child: RadioWidget(
                   categoryColor: Colors.blue.shade700,
                   titleRadio: 'Estudos',
+                  valueInput: 2,
                 ),
               ),
               Expanded(
                 child: RadioWidget(
                   categoryColor: Colors.amberAccent.shade700,
                   titleRadio: 'Saúde',
+                  valueInput: 3,
                 ),
               )
             ],
