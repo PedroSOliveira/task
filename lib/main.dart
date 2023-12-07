@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:task/components/show_model.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(
@@ -14,6 +15,11 @@ void main() {
           useMaterial3: true,
         ),
         home: const HomePage(),
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        supportedLocales: [const Locale('pt', 'BR')],
       ),
     ),
   );
@@ -105,8 +111,43 @@ class HomePage extends StatelessWidget {
                     child: const Text(
                       '+ New Task',
                     ),
-                  )
+                  ),
                 ],
+              ),
+              const Gap(20),
+              Container(
+                width: double.infinity,
+                height: 140,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(12),
+                          bottomLeft: Radius.circular(12),
+                        ),
+                      ),
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: Text("Learning Web Developer"),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               )
             ],
           ),
