@@ -136,11 +136,16 @@ class HomePage extends StatelessWidget {
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Column(
                           children: [
                             ListTile(
                               title: Text("Learning Web Developer"),
+                              subtitle: Text("Learning topic html and CSS"),
+                              trailing: Checkbox(
+                                value: false,
+                                onChanged: (value) => print("object"),
+                              ),
                             )
                           ],
                         ),
