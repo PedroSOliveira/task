@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:task/components/show_model.dart';
+import 'package:task/mocks/fakes_tasks.dart';
 import 'package:task/screens/home/components/category_tile.dart';
+import 'package:task/screens/task/task.dart';
 import 'package:task/widget/card_todo_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,24 +29,29 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 249, 249, 249),
+      backgroundColor: Color.fromARGB(255, 242, 245, 247),
+      floatingActionButton: FloatingActionButton(
+        heroTag: null,
+        onPressed: () => showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          builder: (context) => AddNewTaskModel(),
+        ),
+        elevation: 1,
+        backgroundColor: Colors.blue.shade500, // Ícone
+        shape: const CircleBorder(),
+        child: const Icon(
+          Icons.add,
+          size: 30,
+          color: Colors.white,
+        ),
+      ),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 240, 245, 249),
         foregroundColor: Colors.black,
         elevation: 0,
-        title: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.amber.shade200,
-          ),
-          title: Text(
-            "Olá, usuário",
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade400),
-          ),
-          subtitle: const Text(
-            "Pedro Oliveira",
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -52,11 +59,17 @@ class _HomePageState extends State<HomePage> {
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(CupertinoIcons.calendar),
+                  icon: const Icon(
+                    CupertinoIcons.calendar,
+                    color: Colors.grey,
+                  ),
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(CupertinoIcons.bell),
+                  icon: const Icon(
+                    CupertinoIcons.bell,
+                    color: Colors.grey,
+                  ),
                 ),
               ],
             ),
@@ -65,7 +78,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
               Container(
@@ -88,53 +101,15 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const Gap(20),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     const Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Text(
-              //           "Today's tasks",
-              //           style: TextStyle(
-              //             fontSize: 20,
-              //             fontWeight: FontWeight.bold,
-              //             color: Colors.black,
-              //           ),
-              //         ),
-              //         Text(
-              //           "Wednesday, 11 May",
-              //           style: TextStyle(color: Colors.grey),
-              //         ),
-              //       ],
-              //     ),
-              //     ElevatedButton(
-              //       style: ElevatedButton.styleFrom(
-              //           backgroundColor: const Color(0xFFD5E8FA),
-              //           foregroundColor: Colors.blue.shade700,
-              //           elevation: 0,
-              //           shape: RoundedRectangleBorder(
-              //               borderRadius: BorderRadius.circular(8))),
-              //       onPressed: () => showModalBottomSheet(
-              //         isScrollControlled: true,
-              //         context: context,
-              //         shape: RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(16)),
-              //         builder: (context) => AddNewTaskModel(),
-              //       ),
-              //       child: const Text(
-              //         '+ New Task',
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // const Gap(20),
               ListView.separated(
-                itemCount: 4,
+                itemCount: mockTasks.length,
                 shrinkWrap: true,
-                itemBuilder: (context, index) => const CardTodo(),
-                separatorBuilder: (context, index) =>
-                    SizedBox(height: 10), // Espaço horizontal entre os itens
+                itemBuilder: (context, index) => CardTodo(
+                  task: mockTasks[index],
+                ),
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 10,
+                ), // Espaço horizontal entre os itens
               ),
             ],
           ),

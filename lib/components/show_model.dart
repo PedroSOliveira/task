@@ -9,6 +9,7 @@ import 'package:task/provider/radio_provider.dart';
 import 'package:task/widget/date_time_widget.dart';
 import 'package:task/widget/radio_widget.dart';
 import 'package:task/widget/text_field_widget.dart';
+import 'package:toastification/toastification.dart';
 
 class AddNewTaskModel extends ConsumerWidget {
   const AddNewTaskModel({super.key});
@@ -162,7 +163,32 @@ class AddNewTaskModel extends ConsumerWidget {
                     // side: BorderSide(color: Colors.blue.shade800),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    toastification.show(
+                      context: context,
+                      type: ToastificationType.success,
+                      style: ToastificationStyle.fillColored,
+                      autoCloseDuration: const Duration(seconds: 2),
+                      title: const Text('Atividade cadastrada!'),
+                      description: RichText(
+                          text: const TextSpan(
+                              text: 'Nova atividade cadastrada com sucesso. ')),
+                      alignment: Alignment.topRight,
+                      animationDuration: const Duration(milliseconds: 300),
+                      icon: const Icon(Icons.check, size: 34,),
+                      primaryColor: Colors.blue.shade500,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 16),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      borderRadius: BorderRadius.circular(14),
+                      showProgressBar: true,
+                      closeButtonShowType: CloseButtonShowType.onHover,
+                      closeOnClick: false,
+                      pauseOnHover: true,
+                      dragToClose: true,
+                    );
+                  },
                   child: const Text('Salvar'),
                 ),
               ),

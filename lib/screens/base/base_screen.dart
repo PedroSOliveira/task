@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:task/main.dart';
+import 'package:task/mocks/fakes_tasks.dart';
+import 'package:task/screens/calendar/calendar_screen.dart';
+import 'package:task/screens/charts/dashboard_screen.dart';
 import 'package:task/screens/home/home_tab.dart';
+import 'package:task/screens/pomodoro/pomodoro_screen.dart';
 import 'package:task/theme/manager_theme.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -28,13 +32,12 @@ class _BaseScreenState extends State<BaseScreen> {
         index: _selectedIndex,
         children: [
           HomePage(),
-          HomePage(),
-          HomePage(),
-          HomePage(),
+          CalendarPage(),
+          PomodoroScreen(),
+          TaskStatisticsScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         currentIndex: _selectedIndex,
@@ -48,16 +51,16 @@ class _BaseScreenState extends State<BaseScreen> {
             label: 'Tarefas',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.calendar_month),
+            label: 'Calendário',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
+            icon: Icon(Icons.lock_clock_rounded),
+            label: 'Pomodoro',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
+            icon: Icon(Icons.bar_chart),
+            label: 'Dashboard',
           ),
         ],
       ),

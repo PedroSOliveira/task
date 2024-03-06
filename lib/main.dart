@@ -14,6 +14,8 @@ void main() {
   runApp(
     ProviderScope(
       child: MaterialApp(
+        locale: const Locale('pt', 'BR'),
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -22,11 +24,11 @@ void main() {
         home: BaseScreen(
           themeModeManager: themeModeManager,
         ),
-        localizationsDelegates: [
+        localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
-        supportedLocales: [const Locale('pt', 'BR')],
+        supportedLocales: const [Locale('pt', 'BR')],
       ),
     ),
   );

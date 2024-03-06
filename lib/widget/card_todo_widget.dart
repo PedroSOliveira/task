@@ -1,79 +1,100 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:task/models/task.dart';
+import 'package:task/screens/task/task.dart';
 
 class CardTodo extends StatelessWidget {
-  const CardTodo({
-    super.key,
-  });
+  const CardTodo({Key? key, required this.task}) : super(key: key);
+
+  final Task task;
+
+  void _navigateToTaskDetailsScreen(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return TaskDetailsPage(
+        task: task,
+      );
+    }));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 110,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12),
-                bottomLeft: Radius.circular(12),
+    return GestureDetector(
+      onTap: () {
+        _navigateToTaskDetailsScreen(context);
+      },
+      child: Container(
+        // height: 70,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  bottomLeft: Radius.circular(12),
+                ),
               ),
+              width: 5,
             ),
-            width: 20,
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text("Learning Web Developer"),
-                    subtitle: Text("Learning topic html and CSS"),
-                    trailing: Transform.scale(
-                      scale: 1.5,
-                      child: Checkbox(
-                        activeColor: Colors.blueGrey,
-                        shape: const CircleBorder(),
-                        value: true,
-                        onChanged: (value) => print("object"),
-                      ),
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset(0, -12),
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Divider(
-                            thickness: 1.5,
-                            color: Colors.grey.shade200,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            task.title,
+                            style: TextStyle(fontSize: 14),
                           ),
-                        ],
-                      ),
+                        ),
+                        Transform.scale(
+                          scale: 1.5,
+                          child: Checkbox(
+                            activeColor: Colors.grey,
+                            fillColor: MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.selected)) {
+                                return Colors.grey;
+                              }
+                              return Colors.grey.shade300;
+                            }),
+                            shape: const CircleBorder(
+                              side: BorderSide(color: Colors.grey, width: 1.0),
+                            ),
+                            value: false,
+                            onChanged: (value) => print("object"),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Row(
-                    children: [
-                      Text('Today'),
-                      Gap(12),
-                      Text('09:15 - 11:45'),
-                    ],
-                  )
-                ],
+                    const Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_month,
+                          size: 18,
+                          color: Colors.grey,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          '10/03/2024 - 11:45',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
