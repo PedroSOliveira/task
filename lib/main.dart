@@ -1,18 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gap/gap.dart';
-import 'package:task/components/show_model.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:task/screens/base/base_screen.dart';
+import 'package:task/screens/loading/initialization_loading_screen.dart';
 import 'package:task/theme/manager_theme.dart';
-import 'package:task/widget/card_todo_widget.dart';
 
-void main() {
-  final themeModeManager = ThemeModeManager();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
+}
 
-  runApp(
-    ProviderScope(
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final ThemeModeManager themeModeManager = ThemeModeManager();
+
+  late ThemeMode themeMode = ThemeMode.system;
+
+  @override
+  void initState() {
+    super.initState();
+    themeModeManager.onThemeChange.listen((newTheme) {
+      setState(() => themeMode = newTheme);
+    });
+
+    // InterstitialWithMediation.instance.load();
+
+    themeMode = themeModeManager.themeMode;
+  }
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return ProviderScope(
       child: MaterialApp(
         locale: const Locale('pt', 'BR'),
         debugShowCheckedModeBanner: false,
@@ -21,15 +46,13 @@ void main() {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: BaseScreen(
-          themeModeManager: themeModeManager,
-        ),
+        home: const InitializationLoadingScreen(),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
         supportedLocales: const [Locale('pt', 'BR')],
       ),
-    ),
-  );
+    );
+  }
 }

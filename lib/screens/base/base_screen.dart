@@ -4,6 +4,8 @@ import 'package:task/mocks/fakes_tasks.dart';
 import 'package:task/screens/calendar/calendar_screen.dart';
 import 'package:task/screens/charts/dashboard_screen.dart';
 import 'package:task/screens/home/home_tab.dart';
+import 'package:task/screens/login/login_screen.dart';
+import 'package:task/screens/menuScreen/menu_tiles_screen.dart';
 import 'package:task/screens/pomodoro/pomodoro_screen.dart';
 import 'package:task/theme/manager_theme.dart';
 
@@ -35,6 +37,7 @@ class _BaseScreenState extends State<BaseScreen> {
           CalendarPage(),
           PomodoroScreen(),
           TaskStatisticsScreen(),
+          MenuScreen()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -61,6 +64,10 @@ class _BaseScreenState extends State<BaseScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
             label: 'Dashboard',
+          ),
+           BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Conta',
           ),
         ],
       ),

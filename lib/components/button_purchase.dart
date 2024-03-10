@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task/screens/login/login_screen.dart';
 
 class CardPurchase extends StatelessWidget {
   void showUpgradeModal(BuildContext context) {
@@ -6,9 +7,9 @@ class CardPurchase extends StatelessWidget {
   }
 
   void _openUpgradeModal(BuildContext context) {
-    // final pageRoute = MaterialPageRoute(builder: (context) => PurchaseScreen());
+    final pageRoute = MaterialPageRoute(builder: (context) => LoginScreen());
 
-    // Navigator.of(context).pushReplacement(pageRoute);
+    Navigator.of(context).pushReplacement(pageRoute);
   }
 
   @override
@@ -38,7 +39,7 @@ class CardPurchase extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Text(
+                       const Text(
                           'Task',
                           style: TextStyle(
                             fontSize: 16, // Diminuí o tamanho do texto
@@ -46,7 +47,7 @@ class CardPurchase extends StatelessWidget {
                             color: Colors.white, // Cor do texto
                           ),
                         ),
-                        SizedBox(width: 8.0),
+                        const SizedBox(width: 8.0),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal:

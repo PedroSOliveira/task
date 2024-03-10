@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -5,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:task/components/show_model.dart';
 import 'package:task/mocks/fakes_tasks.dart';
 import 'package:task/screens/home/components/category_tile.dart';
+import 'package:task/screens/login/login_screen.dart';
 import 'package:task/screens/task/task.dart';
 import 'package:task/widget/card_todo_widget.dart';
 
@@ -20,10 +22,19 @@ class _HomePageState extends State<HomePage> {
 
   String selectedCategory = 'Trabalho';
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   void _selectedOptionCategory(String option) {
     setState(() {
       selectedCategory = option;
     });
+  }
+
+  void _handleSignOut() async {
+    await _auth.signOut();
+    final pageRoute = MaterialPageRoute(builder: (context) => LoginScreen());
+
+    Navigator.of(context).pushReplacement(pageRoute);
   }
 
   @override
@@ -32,13 +43,20 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Color.fromARGB(255, 242, 245, 247),
       floatingActionButton: FloatingActionButton(
         heroTag: null,
-        onPressed: () => showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          builder: (context) => AddNewTaskModel(),
-        ),
+        onPressed: () {
+          _handleSignOut();
+          // final pageRoute =
+          //     MaterialPageRoute(builder: (context) => LoginScreen());
+
+          // Navigator.of(context).pushReplacement(pageRoute);
+        },
+        // showModalBottomSheet(
+        //   isScrollControlled: true,
+        //   context: context,
+        //   shape:
+        //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        //   builder: (context) => AddNewTaskModel(),
+        // ),
         elevation: 1,
         backgroundColor: Colors.blue.shade500, // Ícone
         shape: const CircleBorder(),
