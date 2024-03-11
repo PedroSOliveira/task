@@ -30,66 +30,49 @@ class CardTodo extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              decoration: const BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  bottomLeft: Radius.circular(12),
-                ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(task.title),
+                  const Gap(5),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.calendar_month,
+                        size: 18,
+                        color: Colors.grey,
+                      ),
+                      const Gap(5),
+                      Text(
+                        task.category,
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              width: 5,
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            task.title,
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ),
-                        Transform.scale(
-                          scale: 1.5,
-                          child: Checkbox(
-                            activeColor: Colors.grey,
-                            fillColor: MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.selected)) {
-                                return Colors.grey;
-                              }
-                              return Colors.grey.shade300;
-                            }),
-                            shape: const CircleBorder(
-                              side: BorderSide(color: Colors.grey, width: 1.0),
-                            ),
-                            value: false,
-                            onChanged: (value) => print("object"),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Row(
-                      children: [
-                        Icon(
-                          Icons.calendar_month,
-                          size: 18,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          '10/03/2024 - 11:45',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ],
+            Transform.scale(
+              scale:
+                  1.25, // Altere este valor para ajustar o tamanho do checkbox
+              child: Theme(
+                data: ThemeData(
+                  colorScheme: ColorScheme.light(
+                    primary: Colors.grey.shade400, // Cor da borda
+                  ),
+                ),
+                child: Checkbox(
+                  activeColor: Colors.grey.shade400,
+                  shape: CircleBorder(
+                    side: BorderSide(
+                        color: Colors.grey.shade400, width: 1), // Cor da borda
+                  ),
+                  value: false,
+                  onChanged: (value) => print("object"),
                 ),
               ),
             )
