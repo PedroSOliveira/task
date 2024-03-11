@@ -35,7 +35,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 242, 245, 247),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       body: SafeArea(
         child: Column(
           children: [
@@ -69,10 +69,10 @@ class _MenuScreenState extends State<MenuScreen> {
                       width: 1.0,
                     ),
                   ),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(16.0),
-                    bottomRight: Radius.circular(16.0),
-                  ),
+                  // borderRadius: const BorderRadius.only(
+                  //   bottomLeft: Radius.circular(16.0),
+                  //   bottomRight: Radius.circular(0.0),
+                  // ),
                 ),
                 child: ListView(
                   children: [

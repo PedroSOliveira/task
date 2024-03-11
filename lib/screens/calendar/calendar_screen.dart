@@ -69,16 +69,16 @@ class _CalendarPageState extends State<CalendarPage> {
                   ),
                 ),
                 const Gap(20),
-                ListView.separated(
-                  itemCount: mockTasks.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) => CardTodo(
-                    task: mockTasks[index],
-                  ),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 10,
-                  ), // Espaço horizontal entre os itens
-                ),
+                // ListView.separated(
+                //   itemCount: mockTasks.length,
+                //   shrinkWrap: true,
+                //   itemBuilder: (context, index) => CardTodo(
+                //     task: mockTasks[index],
+                //   ),
+                //   separatorBuilder: (context, index) => const SizedBox(
+                //     height: 10,
+                //   ), // Espaço horizontal entre os itens
+                // ),
               ],
             ),
           ),

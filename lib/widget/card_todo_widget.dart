@@ -52,7 +52,7 @@ class CardTodo extends StatelessWidget {
                         Expanded(
                           child: Text(
                             task.title,
-                            style: TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                           ),
                         ),
                         Transform.scale(

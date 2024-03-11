@@ -6,7 +6,7 @@ class TaskService {
 
   Future<List<Task>> getTasks() async {
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('tasks').get();
+      QuerySnapshot querySnapshot = await _firestore.collection('todo').get();
       List<Task> tasks = querySnapshot.docs.map((doc) => Task.fromSnapshot(doc)).toList();
       return tasks;
     } catch (e) {

@@ -1,17 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:gap/gap.dart';
-import 'package:task/components/show_model.dart';
-import 'package:task/mocks/fakes_tasks.dart';
+import 'package:task/models/task.dart';
 import 'package:task/screens/home/components/category_tile.dart';
 import 'package:task/screens/login/login_screen.dart';
-import 'package:task/screens/task/task.dart';
+import 'package:task/services/task_service.dart';
 import 'package:task/widget/card_todo_widget.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -24,6 +21,10 @@ class _HomePageState extends State<HomePage> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  final TaskService _taskService = TaskService();
+
+  late List<Task> tasks = [];
+
   void _selectedOptionCategory(String option) {
     setState(() {
       selectedCategory = option;
@@ -35,6 +36,23 @@ class _HomePageState extends State<HomePage> {
     final pageRoute = MaterialPageRoute(builder: (context) => LoginScreen());
 
     Navigator.of(context).pushReplacement(pageRoute);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTasks();
+  }
+
+  Future<void> _fetchTasks() async {
+    try {
+      List<Task> fetchedTasks = await _taskService.getTasks();
+      setState(() {
+        tasks = fetchedTasks;
+      });
+    } catch (e) {
+      print('Error fetching tasks: $e');
+    }
   }
 
   @override
@@ -118,16 +136,14 @@ class _HomePageState extends State<HomePage> {
                   itemCount: categories.length,
                 ),
               ),
-              const Gap(20),
+              const SizedBox(height: 20),
               ListView.separated(
-                itemCount: mockTasks.length,
+                itemCount: tasks.length,
                 shrinkWrap: true,
-                itemBuilder: (context, index) => CardTodo(
-                  task: mockTasks[index],
-                ),
+                itemBuilder: (context, index) => CardTodo(task: tasks[index]),
                 separatorBuilder: (context, index) => const SizedBox(
                   height: 10,
-                ), // Espaço horizontal entre os itens
+                ),
               ),
             ],
           ),
