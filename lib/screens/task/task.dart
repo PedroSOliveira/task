@@ -17,7 +17,7 @@ class TaskDetailsPage extends StatefulWidget {
 class _TaskDetailsPageState extends State<TaskDetailsPage> {
   @override
   Widget build(BuildContext context) {
-    String formattedDate = DateFormat('dd/MM/yyyy').format(widget.task.date);
+    // String formattedDate = DateFormat('dd/MM/yyyy').format(widget.task.date);
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 240, 245, 249),
@@ -59,7 +59,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
               const SizedBox(height: 10),
               TaskTitleColumn(title: widget.task.title),
               const SizedBox(height: 10),
-              TaskDateTimeColumn(date: formattedDate, time: '10:00'),
+              TaskDateTimeColumn(date: "", time: '10:00'),
               const SizedBox(height: 10),
               const TaskNotesColumn(
                 notes:

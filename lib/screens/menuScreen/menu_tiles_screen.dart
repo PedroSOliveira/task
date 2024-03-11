@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:task/models/user_model.dart';
@@ -12,6 +13,7 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   UserStorage user = new UserStorage(email: '', name: '', id: '', photo: '');
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   void initialize() async {}
 
@@ -25,59 +27,42 @@ class _MenuScreenState extends State<MenuScreen> {
     Future<UserStorage?> userAuthGoogle = UserService.getGoogleUser();
     // user = await userAuthGoogle; // Assuming user is set after fetching data
 
-    final GoogleSignIn _googleSignIn = GoogleSignIn();
+    // final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-   
-    if (googleUser != null) {
-      // Check if user is not null before accessing email
-      if (user != null) {
-        setState(() {
-          user.email = googleUser.email;
-          user.photo = googleUser.photoUrl.toString(); // Use null-safe setter (!)
-        });
-      }
-    }
+    // final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 242, 245, 247),
+      backgroundColor: const Color.fromARGB(255, 242, 245, 247),
       body: SafeArea(
         child: Column(
           children: [
             const SizedBox(height: 20),
-
             CircleAvatar(
               radius: 50,
-              backgroundImage: NetworkImage(user!.photo),
+              backgroundImage: NetworkImage(auth.currentUser!.photoURL!),
             ),
             const SizedBox(height: 10),
-
             Text(
-              'Nome do Usuário',
+              auth.currentUser!.displayName!,
               style: Theme.of(context)
                   .textTheme
                   .headline6
                   ?.copyWith(color: Colors.grey.shade800),
             ),
-
-            // Email do usuário
             Text(
-              'usuario@email.com',
+              auth.currentUser!.email!,
               style: Theme.of(context)
                   .textTheme
                   .bodyText1
                   ?.copyWith(color: Colors.grey.shade800),
             ),
-
             const SizedBox(height: 20),
-
-            // Itens de menu
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
                       color: Colors.grey,

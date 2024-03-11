@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:task/controller/google_auth_controller.dart';
 import 'package:task/firebase_options.dart';
 import 'package:task/models/user_model.dart';
+import 'package:task/screens/base/base_screen.dart';
 import 'package:task/services/user_service.dart';
+import 'package:task/theme/manager_theme.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final themeModeManager = ThemeModeManager();
 
   User? _user;
 
@@ -27,26 +30,30 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-  void _handleGoogleSignin() async {
+  void _handleGoogleSignin(context) async {
     try {
-      // await GoogleAuthController().signInWithGoogle();
+      await GoogleAuthController().signInWithGoogle();
       // Faça login com o Google
-      UserCredential userCredential =
-          await GoogleAuthController().signInWithGoogle();
+      // UserCredential userCredential =
+      //     await GoogleAuthController().signInWithGoogle();
 
-      // Verifique se o usuário foi autenticado com sucesso
-      if (userCredential.user != null) {
-        // Se o usuário não for nulo, significa que o login foi bem-sucedido
-        print(
-            'Usuário autenticado com sucesso: ${userCredential.user!.displayName}');
+      // if (userCredential.user != null) {
+      //   print(
+      //       'Usuário autenticado com sucesso: ${userCredential.user!.displayName}');
 
-        // Redirecione para a tela inicial, por exemplo
-        Navigator.pushReplacementNamed(context, '/tela_inicial');
-      } else {
-        // Se o usuário for nulo, algo deu errado durante o login
-        print('Erro: Usuário nulo após o login.');
-      }
-
+      //   final pageRoute = MaterialPageRoute(
+      //       builder: (context) => BaseScreen(
+      //             themeModeManager: themeModeManager,
+      //           ));
+      //   Navigator.of(context).pushReplacement(pageRoute);
+      // } else {
+      //   print('Erro: Usuário nulo após o login.');
+      // }
+      final pageRoute = MaterialPageRoute(
+          builder: (context) => BaseScreen(
+                themeModeManager: themeModeManager,
+              ));
+      Navigator.of(context).pushReplacement(pageRoute);
       // GoogleAuthProvider _googleAuthProvider = GoogleAuthProvider();
       // _auth.signInWithProvider(_googleAuthProvider);
     } catch (error) {
@@ -99,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 40),
           ElevatedButton(
             onPressed: () {
-              _handleGoogleSignin();
+              _handleGoogleSignin(context);
               // Implemente a lógica de login com o Google aqui
             },
             child: const Padding(
@@ -110,8 +117,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             style: ElevatedButton.styleFrom(
-              primary: Colors.blue,
-              onPrimary: Colors.white,
+              // primary: Colors.blue,
+              // onPrimary: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),

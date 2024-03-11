@@ -1,90 +1,62 @@
 {
-    "project_info": {
-      "project_number": "928212580002",
-      "project_id": "task-84c92",
-      "storage_bucket": "task-84c92.appspot.com"
-    },
-    "client": [
-      {
-        "client_info": {
-          "mobilesdk_app_id": "1:928212580002:android:1c3c545c9c6f75f15609fb",
-          "android_client_info": {
-            "package_name": "com.seven.geradortimes"
-          }
-        },
-        "oauth_client": [
-          {
-            "client_id": "928212580002-gng8n40d6vuuten27fhtrk4o70g0bcfs.apps.googleusercontent.com",
-            "client_type": 3
-          }
-        ],
-        "api_key": [
-          {
-            "current_key": "AIzaSyANVCsScD5sTbXkhAYHaDOJJpbhc4pXtW0"
-          }
-        ],
-        "services": {
-          "appinvite_service": {
-            "other_platform_oauth_client": [
-              {
-                "client_id": "928212580002-gng8n40d6vuuten27fhtrk4o70g0bcfs.apps.googleusercontent.com",
-                "client_type": 3
-              },
-              {
-                "client_id": "928212580002-ei3rvegh0m8d38np45h6l96svr50k7pe.apps.googleusercontent.com",
-                "client_type": 2,
-                "ios_info": {
-                  "bundle_id": "com.seven.task"
-                }
-              }
-            ]
-          }
+  "project_info": {
+    "project_number": "928212580002",
+    "project_id": "task-84c92",
+    "storage_bucket": "task-84c92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928212580002:android:eba3deb573bcc9b95609fb",
+        "android_client_info": {
+          "package_name": "com.seven.task"
         }
       },
-      {
-        "client_info": {
-          "mobilesdk_app_id": "1:928212580002:android:eba3deb573bcc9b95609fb",
-          "android_client_info": {
-            "package_name": "com.seven.task"
+      "oauth_client": [
+        {
+          "client_id": "928212580002-cfs633psts0oem3gk8p0490ii5t104o0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seven.task",
+            "certificate_hash": "3aa377e39b062ff2a152531939942cc401f22ecb"
           }
         },
-        "oauth_client": [
-          {
-            "client_id": "928212580002-cfs633psts0oem3gk8p0490ii5t104o0.apps.googleusercontent.com",
-            "client_type": 1,
-            "android_info": {
-              "package_name": "com.seven.task",
-              "certificate_hash": "3aa377e39b062ff2a152531939942cc401f22ecb"
-            }
-          },
-          {
-            "client_id": "928212580002-gng8n40d6vuuten27fhtrk4o70g0bcfs.apps.googleusercontent.com",
-            "client_type": 3
+        {
+          "client_id": "928212580002-ldtcsr805kfcpofdugnp7gb63v90u6mi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.seven.task",
+            "certificate_hash": "40e3c47607b929b268889167917c5a896a5252f5"
           }
-        ],
-        "api_key": [
-          {
-            "current_key": "AIzaSyANVCsScD5sTbXkhAYHaDOJJpbhc4pXtW0"
-          }
-        ],
-        "services": {
-          "appinvite_service": {
-            "other_platform_oauth_client": [
-              {
-                "client_id": "928212580002-gng8n40d6vuuten27fhtrk4o70g0bcfs.apps.googleusercontent.com",
-                "client_type": 3
-              },
-              {
-                "client_id": "928212580002-ei3rvegh0m8d38np45h6l96svr50k7pe.apps.googleusercontent.com",
-                "client_type": 2,
-                "ios_info": {
-                  "bundle_id": "com.seven.task"
-                }
+        },
+        {
+          "client_id": "928212580002-gng8n40d6vuuten27fhtrk4o70g0bcfs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANVCsScD5sTbXkhAYHaDOJJpbhc4pXtW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928212580002-gng8n40d6vuuten27fhtrk4o70g0bcfs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "928212580002-ei3rvegh0m8d38np45h6l96svr50k7pe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.seven.task"
               }
-            ]
-          }
+            }
+          ]
         }
       }
-    ],
-    "configuration_version": "1"
-  }
+    }
+  ],
+  "configuration_version": "1"
+}

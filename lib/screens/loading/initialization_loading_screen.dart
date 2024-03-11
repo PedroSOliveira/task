@@ -30,12 +30,18 @@ class _InitializationLoadingScreenState
 
   late UserService userService;
 
-   UserStorage? user;
+  UserStorage? user;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    WidgetsFlutterBinding.ensureInitialized();
     initialize();
+    super.didChangeDependencies();
   }
 
   void initialize() async {
@@ -58,11 +64,11 @@ class _InitializationLoadingScreenState
   }
 
   bool getUser() {
-    Future<UserStorage?> userStorage = UserService.getGoogleUser();
-    Future<UserStorage?> userAuthGoogle = UserService.getGoogleUser();
+    // Future<UserStorage?> userStorage = UserService.getGoogleUser();
+    // Future<UserStorage?> userAuthGoogle = UserService.getGoogleUser();
 
-    // ignore: unnecessary_null_comparison
-    if (userStorage != null || userAuthGoogle != null) return true;
+    // // ignore: unnecessary_null_comparison
+    // if (userStorage != null || userAuthGoogle != null) return true;
 
     return false;
   }
@@ -96,12 +102,6 @@ class _InitializationLoadingScreenState
   Future<void> markFirstTimeUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool(keyPreferencesFirstTime, false);
-  }
-
-  @override
-  void didChangeDependencies() {
-    initialize();
-    super.didChangeDependencies();
   }
 
   @override
