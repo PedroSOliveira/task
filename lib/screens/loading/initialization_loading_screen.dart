@@ -26,7 +26,7 @@ class _InitializationLoadingScreenState
     extends State<InitializationLoadingScreen> {
   final themeModeManager = ThemeModeManager();
 
-  final String keyPreferencesFirstTime = "simuladoenem@first_time";
+  final String keyPreferencesFirstTime = "task@first_time";
 
   late UserService userService;
 
@@ -39,7 +39,6 @@ class _InitializationLoadingScreenState
 
   @override
   void didChangeDependencies() {
-    WidgetsFlutterBinding.ensureInitialized();
     initialize();
     super.didChangeDependencies();
   }

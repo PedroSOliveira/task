@@ -37,7 +37,6 @@ class _BaseScreenState extends State<BaseScreen> {
           CalendarPage(),
           PomodoroScreen(),
           TaskStatisticsScreen(),
-          MenuScreen()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -64,10 +63,6 @@ class _BaseScreenState extends State<BaseScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
             label: 'Dashboard',
-          ),
-           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Conta',
           ),
         ],
       ),

@@ -22,7 +22,7 @@ class CategoryTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: isSelected ? Colors.blue[100] : Colors.white),
+              color: isSelected ? Colors.blue[100] : Color.fromARGB(255, 230, 232, 233)),
           child: Text(
             category,
             style: TextStyle(

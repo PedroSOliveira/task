@@ -2,7 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:task/models/user_model.dart';
+import 'package:task/screens/base/base_screen.dart';
+
 import 'package:task/services/user_service.dart';
+import 'package:task/theme/manager_theme.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -20,21 +23,43 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
-    getUser();
   }
 
-  void getUser() async {
-    Future<UserStorage?> userAuthGoogle = UserService.getGoogleUser();
-    // user = await userAuthGoogle; // Assuming user is set after fetching data
+  void homeBack(BuildContext context) {
+    final themeModeManager = ThemeModeManager();
 
-    // final GoogleSignIn _googleSignIn = GoogleSignIn();
-
-    // final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    try {
+      bool showBanner = false;
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (context) => BaseScreen(
+                    themeModeManager: themeModeManager,
+                  )),
+          (_) => false);
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Menu',
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_sharp,
+            color: Colors.grey,
+            size: 30,
+          ),
+          onPressed: () {
+            homeBack(context);
+          },
+        ),
+      ),
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       body: SafeArea(
         child: Column(

@@ -1,10 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:task/components/show_model.dart';
 import 'package:task/models/task.dart';
 import 'package:task/screens/home/components/category_tile.dart';
 import 'package:task/screens/login/login_screen.dart';
+import 'package:task/screens/menuScreen/menu_tiles_screen.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/theme/manager_theme.dart';
 import 'package:task/widget/card_todo_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,9 +19,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> categories = ['Trabalho', 'Entretenimento', 'Viagem', 'Pessoal'];
+  List<String> categories = [
+    'Todas',
+    'Trabalho',
+    'Entretenimento',
+    'Estudo',
+    'Viagem',
+    'Pessoal'
+  ];
 
-  String selectedCategory = 'Trabalho';
+  String selectedCategory = 'Todas';
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -25,10 +36,33 @@ class _HomePageState extends State<HomePage> {
 
   late List<Task> tasks = [];
 
+  late List<Task> allTasks = [];
+
+  final themeModeManager = ThemeModeManager();
+
+  final String allCategories = 'Todas';
+
   void _selectedOptionCategory(String option) {
     setState(() {
       selectedCategory = option;
     });
+
+    _filterTasksByCategory(option);
+  }
+
+  void _filterTasksByCategory(String category) {
+    if (category == allCategories) {
+      setState(() {
+        tasks = allTasks;
+      });
+    } else {
+      List<Task> filteredTasks =
+          allTasks.where((task) => task.category == category).toList();
+
+      setState(() {
+        tasks = filteredTasks;
+      });
+    }
   }
 
   void _handleSignOut() async {
@@ -49,32 +83,37 @@ class _HomePageState extends State<HomePage> {
       List<Task> fetchedTasks = await _taskService.getTasks();
       setState(() {
         tasks = fetchedTasks;
+        allTasks = fetchedTasks;
       });
     } catch (e) {
       print('Error fetching tasks: $e');
     }
   }
 
+  void toggleTheme() {
+    setState(() {
+      themeModeManager.themeMode = themeModeManager.themeMode == ThemeMode.light
+          ? ThemeMode.dark
+          : ThemeMode.light;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 242, 245, 247),
+      backgroundColor: const Color.fromARGB(255, 242, 245, 247),
+      // backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         heroTag: null,
         onPressed: () {
-          _handleSignOut();
-          // final pageRoute =
-          //     MaterialPageRoute(builder: (context) => LoginScreen());
-
-          // Navigator.of(context).pushReplacement(pageRoute);
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            builder: (context) => const AddNewTaskModel(),
+          );
         },
-        // showModalBottomSheet(
-        //   isScrollControlled: true,
-        //   context: context,
-        //   shape:
-        //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        //   builder: (context) => AddNewTaskModel(),
-        // ),
         elevation: 1,
         backgroundColor: Colors.blue.shade500, // Ícone
         shape: const CircleBorder(),
@@ -86,19 +125,21 @@ class _HomePageState extends State<HomePage> {
       ),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 240, 245, 249),
-        foregroundColor: Colors.black,
-        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.blue),
+        centerTitle: true,
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    CupertinoIcons.calendar,
+                  icon: Icon(
+                    themeModeManager.themeMode == ThemeMode.light
+                        ? Icons.dark_mode
+                        : Icons.light_mode,
                     color: Colors.grey,
                   ),
+                  onPressed: toggleTheme,
                 ),
                 IconButton(
                   onPressed: () {},
@@ -111,6 +152,18 @@ class _HomePageState extends State<HomePage> {
             ),
           )
         ],
+        leading: IconButton(
+          icon: const Icon(
+            Icons.menu,
+            color: Colors.grey,
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const MenuScreen()),
+            );
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -137,14 +190,34 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(height: 20),
-              ListView.separated(
-                itemCount: tasks.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => CardTodo(task: tasks[index]),
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 10,
-                ),
-              ),
+              tasks.isNotEmpty
+                  ? ListView.separated(
+                      itemCount: tasks.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) =>
+                          CardTodo(task: tasks[index]),
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 10,
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        // Image.asset('assets/image-login.jpeg'),
+                        const Gap(50),
+
+                        Icon(
+                          // Icons.not_listed_location_sharp,
+                          Icons.announcement,
+                          color: Colors.blue.shade200,
+                          size: 180,
+                        ),
+                        const Gap(10),
+                        const Text(
+                          'Sem atividades dessa categoria.',
+                          style: TextStyle(color: Colors.grey, fontSize: 20),
+                        )
+                      ],
+                    ),
             ],
           ),
         ),

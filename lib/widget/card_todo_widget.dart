@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:task/models/task.dart';
 import 'package:task/screens/task/task.dart';
 
@@ -18,6 +19,10 @@ class CardTodo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime dateTime = task.date.toDate();
+
+    String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+
     return GestureDetector(
       onTap: () {
         _navigateToTaskDetailsScreen(context);
@@ -48,7 +53,7 @@ class CardTodo extends StatelessWidget {
                       ),
                       const Gap(5),
                       Text(
-                        task.category,
+                        formattedDate,
                         style: const TextStyle(color: Colors.grey),
                       ),
                     ],

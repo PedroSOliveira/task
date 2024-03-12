@@ -1,6 +1,8 @@
+import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:task/models/task.dart';
+import 'package:task/screens/menuScreen/menu_tiles_screen.dart';
 
 import 'package:task/screens/task/components/date_item.dart';
 import 'package:task/screens/task/components/detail_item.dart';
@@ -18,6 +20,10 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
   @override
   Widget build(BuildContext context) {
     // String formattedDate = DateFormat('dd/MM/yyyy').format(widget.task.date);
+    String formattedDate =
+        DateFormat('dd/MM/yyyy').format(widget.task.date.toDate());
+    String formattedTime =
+        DateFormat('HH:mm').format(widget.task.date.toDate());
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 240, 245, 249),
@@ -59,7 +65,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
               const SizedBox(height: 10),
               TaskTitleColumn(title: widget.task.title),
               const SizedBox(height: 10),
-              TaskDateTimeColumn(date: "", time: '10:00'),
+              TaskDateTimeColumn(date: formattedDate, time: formattedTime),
               const SizedBox(height: 10),
               const TaskNotesColumn(
                 notes:

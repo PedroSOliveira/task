@@ -113,10 +113,14 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
               child: Text(
                 'Entrar com o Google',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
               ),
             ),
             style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue.shade400,
               // primary: Colors.blue,
               // onPrimary: Colors.white,
               shape: RoundedRectangleBorder(
