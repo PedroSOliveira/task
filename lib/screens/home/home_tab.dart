@@ -42,6 +42,12 @@ class _HomePageState extends State<HomePage> {
 
   final String allCategories = 'Todas';
 
+  bool isLoading = false;
+
+  final TextEditingController _fieldTitleController = TextEditingController();
+  final TextEditingController _fieldDescriptionController =
+      TextEditingController();
+
   void _selectedOptionCategory(String option) {
     setState(() {
       selectedCategory = option;
@@ -72,14 +78,23 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).pushReplacement(pageRoute);
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchTasks();
+  void navigateToNewTaskScreen() {
+    final pageRoute = MaterialPageRoute(
+      builder: (context) => AddNewTaskModel(
+        fieldTitleController: _fieldTitleController,
+        fieldDescriptionController: _fieldDescriptionController,
+        getTasks: _fetchTasks,
+      ),
+    );
+
+    Navigator.of(context).pushReplacement(pageRoute);
   }
 
   Future<void> _fetchTasks() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       List<Task> fetchedTasks = await _taskService.getTasks();
       setState(() {
         tasks = fetchedTasks;
@@ -87,6 +102,10 @@ class _HomePageState extends State<HomePage> {
       });
     } catch (e) {
       print('Error fetching tasks: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -99,30 +118,41 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _fetchTasks();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 242, 245, 247),
-      // backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        heroTag: null,
-        onPressed: () {
-          showModalBottomSheet(
-            isScrollControlled: true,
-            context: context,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            builder: (context) => const AddNewTaskModel(),
-          );
-        },
-        elevation: 1,
-        backgroundColor: Colors.blue.shade500, // Ícone
-        shape: const CircleBorder(),
-        child: const Icon(
-          Icons.add,
-          size: 30,
-          color: Colors.white,
-        ),
-      ),
+      floatingActionButton: isLoading
+          ? null
+          : FloatingActionButton(
+              heroTag: null,
+              onPressed: () {
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  builder: (context) => AddNewTaskModel(
+                    fieldDescriptionController: _fieldDescriptionController,
+                    fieldTitleController: _fieldTitleController,
+                    getTasks: _fetchTasks,
+                  ),
+                );
+              },
+              elevation: 1,
+              backgroundColor: Colors.blue.shade500, // Ícone
+              shape: const CircleBorder(),
+              child: const Icon(
+                Icons.add,
+                size: 30,
+                color: Colors.white,
+              ),
+            ),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 240, 245, 249),
         iconTheme: const IconThemeData(color: Colors.blue),
@@ -190,34 +220,46 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(height: 20),
-              tasks.isNotEmpty
-                  ? ListView.separated(
-                      itemCount: tasks.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) =>
-                          CardTodo(task: tasks[index]),
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 10,
-                      ),
-                    )
-                  : Column(
+              isLoading
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Image.asset('assets/image-login.jpeg'),
-                        const Gap(50),
-
-                        Icon(
-                          // Icons.not_listed_location_sharp,
-                          Icons.announcement,
-                          color: Colors.blue.shade200,
-                          size: 180,
+                        const Gap(100),
+                        CircularProgressIndicator(
+                          color: Colors.blue.shade400,
                         ),
-                        const Gap(10),
-                        const Text(
-                          'Sem atividades dessa categoria.',
-                          style: TextStyle(color: Colors.grey, fontSize: 20),
-                        )
                       ],
-                    ),
+                    )
+                  : Container(
+                      child: tasks.isNotEmpty
+                          ? ListView.separated(
+                              scrollDirection: Axis.vertical,
+                              itemCount: tasks.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) =>
+                                  CardTodo(task: tasks[index]),
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                height: 10,
+                              ),
+                            )
+                          : Column(
+                              children: [
+                                const Gap(50),
+                                Icon(
+                                  Icons.announcement,
+                                  color: Colors.blue.shade200,
+                                  size: 180,
+                                ),
+                                const Gap(10),
+                                const Text(
+                                  'Sem atividades dessa categoria.',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 20),
+                                )
+                              ],
+                            ),
+                    )
             ],
           ),
         ),

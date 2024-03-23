@@ -1,22 +1,190 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:task/constants/app_style.dart';
+import 'package:task/models/task.dart';
 import 'package:task/provider/date_time_provider.dart';
+import 'package:task/provider/loading_save_task.dart';
 import 'package:task/provider/radio_provider.dart';
+import 'package:task/screens/home/components/category_tile.dart';
+import 'package:task/services/task_service.dart';
 import 'package:task/widget/date_time_widget.dart';
 import 'package:task/widget/radio_widget.dart';
 import 'package:task/widget/text_field_widget.dart';
 import 'package:toastification/toastification.dart';
 
 class AddNewTaskModel extends ConsumerWidget {
-  const AddNewTaskModel({super.key});
+  AddNewTaskModel({
+    super.key,
+    required TextEditingController this.fieldTitleController,
+    required TextEditingController this.fieldDescriptionController,
+    required this.getTasks,
+  });
+  final Function getTasks;
+
+  final TextEditingController fieldTitleController;
+  final TextEditingController fieldDescriptionController;
+  final TaskService _taskService = TaskService();
+  final selectedCategoryProvider = StateProvider<String>((ref) => '');
+  final loading = StateProvider<bool>((ref) => false);
+
+  List<String> categories = [
+    'Trabalho',
+    'Entretenimento',
+    'Estudo',
+    'Viagem',
+    'Pessoal'
+  ];
+
+  String selectedCategory = 'Trabalho';
+
+  void showMessageNewTaskRegister(BuildContext context) {
+    toastification.show(
+      context: context,
+      type: ToastificationType.success,
+      style: ToastificationStyle.fillColored,
+      autoCloseDuration: const Duration(seconds: 2),
+      title: const Text('Atividade cadastrada!'),
+      description: RichText(text: TextSpan(text: fieldTitleController.text)),
+      alignment: Alignment.topRight,
+      animationDuration: const Duration(milliseconds: 300),
+      icon: const Icon(
+        Icons.check,
+        size: 34,
+      ),
+      primaryColor: Colors.blue.shade500,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      borderRadius: BorderRadius.circular(14),
+      showProgressBar: true,
+      closeButtonShowType: CloseButtonShowType.onHover,
+      closeOnClick: false,
+      pauseOnHover: true,
+      dragToClose: true,
+    );
+  }
+
+  void showMessageWarningEmptyFields(BuildContext context) {
+    toastification.show(
+      context: context,
+      type: ToastificationType.warning,
+      style: ToastificationStyle.simple,
+      autoCloseDuration: const Duration(seconds: 2),
+      title: const Text('Campos vazios! Preencha os campos.'),
+      description: RichText(
+          text: const TextSpan(
+              text: 'Preencha o(s) campo(s) e tente novamente!')),
+      alignment: Alignment.topRight,
+      animationDuration: const Duration(milliseconds: 400),
+      icon: const Icon(
+        Icons.check,
+        size: 34,
+      ),
+      primaryColor: Colors.yellow.shade400,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      borderRadius: BorderRadius.circular(14),
+      showProgressBar: true,
+      closeButtonShowType: CloseButtonShowType.onHover,
+      closeOnClick: false,
+      pauseOnHover: true,
+      dragToClose: true,
+    );
+  }
+
+  Timestamp convertDateToTimestamp(String date) {
+    final formattedDate = DateFormat('dd/MM/yyyy').parse(date);
+
+    return Timestamp.fromDate(formattedDate);
+  }
+
+  Timestamp convertTimeToTimestamp(String time) {
+    final formattedTime = DateFormat('HH:mm').parse(time);
+
+    return Timestamp.fromDate(formattedTime);
+  }
+
+  void saveNewTask(BuildContext context, WidgetRef ref, String category,
+      String date, String time) {
+    try {
+      bool isEmptyFields = _verifyFieldsIsEmpty();
+
+      _setLoading(ref, true);
+
+      if (isEmptyFields) {
+        showMessageWarningEmptyFields(context);
+      } else {
+        Task task = convertNewTaskRegister(category, date, time);
+
+        _taskService.addTask(task);
+
+        showMessageNewTaskRegister(context);
+
+        getTasks();
+
+        closeModal(context);
+      }
+    } catch (error) {
+      print(error);
+    } finally {
+      _setLoading(ref, false);
+    }
+  }
+
+  Task convertNewTaskRegister(String category, String date, String time) {
+    final dateTimestamp = convertDateToTimestamp(date);
+    final timeTimestamp = convertTimeToTimestamp(time);
+
+    final combinedTimestamp = Timestamp(
+      dateTimestamp.seconds + timeTimestamp.seconds,
+      dateTimestamp.nanoseconds,
+    );
+
+    Task task = Task(
+      title: fieldTitleController.text,
+      description: fieldDescriptionController.text,
+      category: category,
+      date: combinedTimestamp,
+      isDone: false,
+      notes: [],
+      user: 'vinicius.oliv19@gmail.com',
+      id: 'jkdsj',
+    );
+
+    return task;
+  }
+
+  void closeModal(context) {
+    Navigator.of(context).pop();
+  }
+
+  void _selectedOptionCategory(WidgetRef ref, String category) {
+    ref.read(radioProvider.notifier).update((state) => category);
+  }
+
+  void _setLoading(WidgetRef ref, bool isLoading) {
+    ref.read(loadingProvider.notifier).update((state) => isLoading);
+  }
+
+  bool _verifyFieldsIsEmpty() {
+    if (fieldTitleController.text.isEmpty ||
+        fieldDescriptionController.text.isEmpty) {
+      return true;
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateProv = ref.watch(dateProvider);
+    final timeProv = ref.watch(timeProvider);
+    final categoryProv = ref.watch(radioProvider);
+    final isLoading = ref.watch(loadingProvider);
+
     return Container(
       padding: const EdgeInsets.all(30),
       height: MediaQuery.of(context).size.height * 0.80,
@@ -48,46 +216,41 @@ class AddNewTaskModel extends ConsumerWidget {
             style: AppStyle.headingOne,
           ),
           const Gap(6),
-          const TextFieldWidget(maxLine: 1, hintText: "Título da atividade"),
+          TextFieldWidget(
+            maxLine: 1,
+            hintText: "Título da atividade",
+            controller: fieldTitleController,
+          ),
           const Gap(12),
           const Text(
             "Descrição",
             style: AppStyle.headingOne,
           ),
           const Gap(6),
-          const TextFieldWidget(maxLine: 5, hintText: "Adicione uma descrição"),
+          TextFieldWidget(
+            maxLine: 5,
+            hintText: "Adicione uma descrição",
+            controller: fieldDescriptionController,
+          ),
           const Gap(12),
           const Text('Categoria', style: AppStyle.headingOne),
-          Row(
-            children: [
-              Expanded(
-                child: RadioWidget(
-                  categoryColor: Colors.green,
-                  titleRadio: 'Trabalho',
-                  valueInput: 1,
-                  onChangeValue: () =>
-                      ref.read(radioProvider.notifier).update((state) => 1),
-                ),
+          SizedBox(
+            height: 50,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (_, index) {
+                return CategoryTile(
+                  category: categories[index],
+                  isSelected: categoryProv == categories[index],
+                  onPressed: () =>
+                      _selectedOptionCategory(ref, categories[index]),
+                );
+              },
+              separatorBuilder: (_, index) => const SizedBox(
+                width: 15,
               ),
-              Expanded(
-                child: RadioWidget(
-                  categoryColor: Colors.blue.shade700,
-                  titleRadio: 'Estudos',
-                  valueInput: 2,
-                  onChangeValue: () =>
-                      ref.read(radioProvider.notifier).update((state) => 2),
-                ),
-              ),
-              Expanded(
-                child: RadioWidget(
-                  categoryColor: Colors.amberAccent.shade700,
-                  titleRadio: 'Saúde',
-                  valueInput: 3,
-                  onChangeValue: () =>
-                      ref.read(radioProvider.notifier).update((state) => 3),
-                ),
-              )
-            ],
+              itemCount: categories.length,
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,7 +317,8 @@ class AddNewTaskModel extends ConsumerWidget {
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue.shade800,
+                    backgroundColor:
+                        !isLoading ? Colors.blue.shade800 : Colors.grey.shade400,
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
@@ -163,33 +327,18 @@ class AddNewTaskModel extends ConsumerWidget {
                     // side: BorderSide(color: Colors.blue.shade800),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  onPressed: () {
-                    toastification.show(
-                      context: context,
-                      type: ToastificationType.success,
-                      style: ToastificationStyle.fillColored,
-                      autoCloseDuration: const Duration(seconds: 2),
-                      title: const Text('Atividade cadastrada!'),
-                      description: RichText(
-                          text: const TextSpan(
-                              text: 'Nova atividade cadastrada com sucesso. ')),
-                      alignment: Alignment.topRight,
-                      animationDuration: const Duration(milliseconds: 300),
-                      icon: const Icon(Icons.check, size: 34,),
-                      primaryColor: Colors.blue.shade500,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 16),
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                      borderRadius: BorderRadius.circular(14),
-                      showProgressBar: true,
-                      closeButtonShowType: CloseButtonShowType.onHover,
-                      closeOnClick: false,
-                      pauseOnHover: true,
-                      dragToClose: true,
-                    );
-                  },
-                  child: const Text('Salvar'),
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          saveNewTask(
+                              context, ref, categoryProv, dateProv, timeProv);
+                        },
+                  child: isLoading
+                      ? const CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        )
+                      : const Text('Salvar'),
                 ),
               ),
             ],

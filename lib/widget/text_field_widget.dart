@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatelessWidget {
-  const TextFieldWidget(
-      {super.key, required this.hintText, required this.maxLine});
+  TextFieldWidget(
+      {super.key,
+      required this.hintText,
+      required this.controller,
+      required this.maxLine});
 
+  final TextEditingController controller;
   final String hintText;
   final int maxLine;
 
@@ -16,6 +20,7 @@ class TextFieldWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: TextField(
+        controller: controller,
         decoration: InputDecoration(
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,

@@ -46,5 +46,26 @@ class Task {
       'notes': notes,
     };
   }
-}
 
+  Task copyWith({
+    String? id,
+    String? category,
+    Timestamp? date,
+    String? description,
+    bool? isDone,
+    String? title,
+    String? user,
+    List<Map<String, dynamic>>? notes,
+  }) {
+    return Task(
+      id: id ?? this.id,
+      category: category ?? this.category,
+      date: date ?? this.date,
+      description: description ?? this.description,
+      isDone: isDone ?? this.isDone,
+      title: title ?? this.title,
+      user: user ?? this.user,
+      notes: notes ?? this.notes,
+    );
+  }
+}

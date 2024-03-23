@@ -13,7 +13,7 @@ class RadioWidget extends ConsumerWidget {
 
   final Color categoryColor;
   final String titleRadio;
-  final int valueInput;
+  final String valueInput;
   final VoidCallback onChangeValue;
 
   @override
