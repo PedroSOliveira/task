@@ -3,18 +3,33 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:task/models/task.dart';
 import 'package:task/screens/task/task.dart';
+import 'package:task/services/task_service.dart';
 
 class CardTodo extends StatelessWidget {
-  const CardTodo({Key? key, required this.task}) : super(key: key);
+  CardTodo({Key? key, required this.task, required this.getTasks})
+      : super(key: key);
 
   final Task task;
+  final TaskService taskService = TaskService();
+  final VoidCallback getTasks;
 
   void _navigateToTaskDetailsScreen(BuildContext context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return TaskDetailsPage(
         task: task,
+        getTasks: getTasks,
       );
     }));
+  }
+
+  void _toggleTaskCompletion(BuildContext context) {
+    try {
+      Task updatedTask = task.copyWith(isDone: !task.isDone);
+      taskService.updateTask(task.id, updatedTask);
+      getTasks();
+    } catch (e) {
+      print('Erro ao atualizar task: $e');
+    }
   }
 
   @override
@@ -42,7 +57,14 @@ class CardTodo extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(task.title),
+                  Text(
+                    task.title,
+                    style: TextStyle(
+                      decoration: task.isDone
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                    ),
+                  ),
                   const Gap(5),
                   Row(
                     children: [
@@ -76,8 +98,8 @@ class CardTodo extends StatelessWidget {
                     side: BorderSide(
                         color: Colors.grey.shade400, width: 1), // Cor da borda
                   ),
-                  value: false,
-                  onChanged: (value) => print("object"),
+                  value: task.isDone,
+                  onChanged: (value) => _toggleTaskCompletion(context),
                 ),
               ),
             )

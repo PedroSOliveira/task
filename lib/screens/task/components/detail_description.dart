@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:task/models/task.dart';
 import 'package:task/services/task_service.dart';
 
-class TaskTitleColumn extends StatefulWidget {
+class TaskDescriptionColumn extends StatefulWidget {
   final Task task;
 
-  TaskTitleColumn({Key? key, required this.task}) : super(key: key);
+  TaskDescriptionColumn({Key? key, required this.task}) : super(key: key);
 
   @override
-  State<TaskTitleColumn> createState() => _TaskTitleColumnState();
+  State<TaskDescriptionColumn> createState() => _TaskDescriptionColumnState();
 }
 
-class _TaskTitleColumnState extends State<TaskTitleColumn> {
+class _TaskDescriptionColumnState extends State<TaskDescriptionColumn> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final TaskService taskService = TaskService();
@@ -21,19 +20,19 @@ class _TaskTitleColumnState extends State<TaskTitleColumn> {
   void initState() {
     super.initState();
 
-    _controller.text = widget.task.title;
+    _controller.text = widget.task.description;
 
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
-       _updateTitleTask();
+        _updateDescriptionTask();
         print('Teclado foi fechado');
       }
     });
   }
 
-  void _updateTitleTask() {
+  void _updateDescriptionTask() {
     try {
-      Task updatedTask = widget.task.copyWith(title: _controller.text);
+      Task updatedTask = widget.task.copyWith(description: _controller.text);
       taskService.updateTask(widget.task.id, updatedTask);
     } catch (e) {
       print('Erro ao atualizar task: $e');
@@ -70,8 +69,9 @@ class _TaskTitleColumnState extends State<TaskTitleColumn> {
               ),
               const SizedBox(height: 5),
               SizedBox(
-                width: 200,
+                width: 280,
                 child: TextFormField(
+                  maxLines: 5,
                   controller: _controller,
                   focusNode: _focusNode,
                   style: const TextStyle(

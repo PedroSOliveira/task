@@ -5,6 +5,7 @@ import 'package:task/models/task.dart';
 import 'package:task/screens/base/base_screen.dart';
 
 import 'package:task/screens/task/components/date_item.dart';
+import 'package:task/screens/task/components/detail_description.dart';
 import 'package:task/screens/task/components/detail_item.dart';
 import 'package:task/screens/task/components/notes_item.dart';
 import 'package:task/services/task_service.dart';
@@ -12,9 +13,10 @@ import 'package:task/theme/manager_theme.dart';
 import 'package:toastification/toastification.dart';
 
 class TaskDetailsPage extends StatefulWidget {
-  TaskDetailsPage({Key? key, required this.task}) : super(key: key);
+  TaskDetailsPage({Key? key, required this.task, required this.getTasks})
+      : super(key: key);
   final Task task;
-
+  final Function getTasks;
   @override
   _TaskDetailsPageState createState() => _TaskDetailsPageState();
 }
@@ -164,54 +166,62 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
     String formattedTime =
         DateFormat('HH:mm').format(widget.task.date.toDate());
 
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 240, 245, 249),
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async {
+        widget.getTasks();
+        return true;
+      },
+      child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 240, 245, 249),
-        foregroundColor: Colors.black,
-        elevation: 0,
-        actions: [
-          Padding(
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 240, 245, 249),
+          foregroundColor: Colors.black,
+          elevation: 0,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.notifications,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => _showFilterModal(context),
+                    icon: Icon(
+                      Icons.delete_rounded,
+                      color: Colors.red.shade300,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment
+                  .stretch, // Para estender os filhos na horizontal
               children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.notifications,
-                    color: Colors.grey,
-                  ),
+                const SizedBox(height: 10),
+                TaskTitleColumn(task: widget.task),
+                const SizedBox(height: 10),
+                TaskDescriptionColumn(task: widget.task),
+                const SizedBox(height: 10),
+                TaskDateTimeColumn(date: formattedDate, time: formattedTime),
+                const SizedBox(height: 10),
+                const TaskNotesColumn(
+                  notes:
+                      'Esta é uma descrição da tarefa. Aqui você pode adicionar notas e detalhes adicionais sobre a tarefa.',
                 ),
-                IconButton(
-                  onPressed: () => _showFilterModal(context),
-                  icon: Icon(
-                    Icons.delete_rounded,
-                    color: Colors.red.shade300,
-                  ),
-                ),
+                const SizedBox(height: 20),
               ],
             ),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment
-                .stretch, // Para estender os filhos na horizontal
-            children: [
-              const SizedBox(height: 10),
-              TaskTitleColumn(title: widget.task.title),
-              const SizedBox(height: 10),
-              TaskDateTimeColumn(date: formattedDate, time: formattedTime),
-              const SizedBox(height: 10),
-              const TaskNotesColumn(
-                notes:
-                    'Esta é uma descrição da tarefa. Aqui você pode adicionar notas e detalhes adicionais sobre a tarefa.',
-              ),
-              const SizedBox(height: 20),
-            ],
           ),
         ),
       ),

@@ -24,9 +24,9 @@ class TaskService {
     }
   }
 
-  Future<void> updateTask(String taskId, Map<String, dynamic> newData) async {
+  Future<void> updateTask(String taskId, Task task) async {
     try {
-      await _firestore.collection('todo').doc(taskId).update(newData);
+      await _firestore.collection('todo').doc(taskId).update(task.toMap());
     } catch (e) {
       print('Error updating task: $e');
     }

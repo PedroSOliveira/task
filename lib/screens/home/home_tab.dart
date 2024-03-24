@@ -96,9 +96,10 @@ class _HomePageState extends State<HomePage> {
         isLoading = true;
       });
       List<Task> fetchedTasks = await _taskService.getTasks();
+      List<Task> sortedTasks = sortTasksByIsDone(fetchedTasks);
       setState(() {
-        tasks = fetchedTasks;
-        allTasks = fetchedTasks;
+        tasks = sortedTasks;
+        allTasks = sortedTasks;
       });
     } catch (e) {
       print('Error fetching tasks: $e');
@@ -115,6 +116,20 @@ class _HomePageState extends State<HomePage> {
           ? ThemeMode.dark
           : ThemeMode.light;
     });
+  }
+
+  List<Task> sortTasksByIsDone(List<Task> tasks) {
+    tasks.sort((a, b) {
+      if (a.isDone && !b.isDone) {
+        return 1;
+      } else if (!a.isDone && b.isDone) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    return tasks;
   }
 
   @override
@@ -236,8 +251,10 @@ class _HomePageState extends State<HomePage> {
                               scrollDirection: Axis.vertical,
                               itemCount: tasks.length,
                               shrinkWrap: true,
-                              itemBuilder: (context, index) =>
-                                  CardTodo(task: tasks[index]),
+                              itemBuilder: (context, index) => CardTodo(
+                                task: tasks[index],
+                                getTasks: _fetchTasks,
+                              ),
                               separatorBuilder: (context, index) =>
                                   const SizedBox(
                                 height: 10,

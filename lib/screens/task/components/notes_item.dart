@@ -16,7 +16,7 @@ class TaskNotesColumn extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             children: [
               Icon(
                 Icons.notes,
@@ -42,7 +42,7 @@ class TaskNotesColumn extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             notes,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
             ),
           ),

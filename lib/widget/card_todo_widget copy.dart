@@ -19,7 +19,7 @@ class CardTodo extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.green,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
