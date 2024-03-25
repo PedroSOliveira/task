@@ -1,60 +1,118 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart' as cdp;
+import 'package:task/models/task.dart';
+import 'package:task/services/task_service.dart';
 
-class TaskDateTimeColumn extends StatelessWidget {
+class TaskDateTimeColumn extends StatefulWidget {
   final String date;
   final String time;
+  final Task task;
 
-  const TaskDateTimeColumn({Key? key, required this.date, required this.time})
-      : super(key: key);
+  const TaskDateTimeColumn({
+    Key? key,
+    required this.date,
+    required this.time,
+    required this.task,
+  }) : super(key: key);
+
+  @override
+  State<TaskDateTimeColumn> createState() => _TaskDateTimeColumnState();
+}
+
+class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
+  String dateTask = '';
+  String timeTask = '';
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      dateTask = widget.date;
+      timeTask = widget.time;
+    });
+  }
 
   // void _showDatePicker(BuildContext context) async {
-  //   final DateTime? pickedDate = await showModalBottomSheet(
-  //     context: context,
-  //     builder: (BuildContext builder) {
-  //       return Container(
-  //         height: MediaQuery.of(context).size.height * 0.5,
-  //         color: const Color.fromARGB(255, 240, 245, 249),
-  //         child: Theme(
-  //           data: ThemeData.light().copyWith(
-  //             colorScheme: const ColorScheme.light(
-  //               primary: Colors.blue, // Define a cor do texto e dos ícones
-  //             ),
-  //           ),
-  //           child: CalendarDatePicker(
-  //             initialDate: DateTime.now(),
-  //             firstDate: DateTime(2000),
-  //             lastDate: DateTime(2100),
-  //             onDateChanged: (DateTime newDate) {
-  //               Navigator.pop(context, newDate);
-  //             },
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
 
-  //   if (pickedDate != null) {
-  //     print('Data selecionada: ${DateFormat('dd/MM/yyyy').format(pickedDate)}');
-  //   }
-  // }
+  void _updateDateTask(String newDate) {
+    final TaskService taskService = TaskService();
+    final Timestamp combinedTimestamp =
+        convertCombinatedDateAndTime(newDate, widget.time);
+
+    try {
+      setState(() {
+        dateTask = newDate;
+      });
+      Task updatedTask = widget.task.copyWith(date: combinedTimestamp);
+      taskService.updateTask(widget.task.id, updatedTask);
+    } catch (e) {
+      print('Erro ao atualizar task: $e');
+    }
+  }
+
+  void _updateTimeTask(String newTime) {
+    final TaskService taskService = TaskService();
+    final Timestamp combinedTimestamp =
+        convertCombinatedDateAndTime(dateTask, newTime);
+
+    final convertTime =
+        combinedTimestamp.toDate().add(const Duration(hours: -3));
+
+    final Timestamp adjustedTimestamp = Timestamp.fromDate(convertTime);
+
+    try {
+      setState(() {
+        timeTask = newTime;
+      });
+      Task updatedTask = widget.task.copyWith(date: adjustedTimestamp);
+      taskService.updateTask(widget.task.id, updatedTask);
+    } catch (e) {
+      print('Erro ao atualizar task: $e');
+    }
+  }
+
+  Timestamp convertDateToTimestamp(String date) {
+    final formattedDate = DateFormat('dd/MM/yyyy').parse(date);
+
+    return Timestamp.fromDate(formattedDate);
+  }
+
+  Timestamp convertTimeToTimestamp(String time) {
+    final formattedTime = DateFormat('HH:mm').parse(time).toUtc();
+
+    return Timestamp.fromDate(formattedTime);
+  }
+
+  Timestamp convertCombinatedDateAndTime(String newDate, String newTime) {
+    final dateTimestamp = convertDateToTimestamp(newDate);
+    final timeTimestamp = convertTimeToTimestamp(newTime);
+
+    final combinedTimestamp = Timestamp(
+      dateTimestamp.seconds + timeTimestamp.seconds,
+      dateTimestamp.nanoseconds,
+    );
+
+    return combinedTimestamp;
+  }
 
   void _showDatePicker(BuildContext context) async {
     final DateTime? pickedDate = await showModalBottomSheet(
       context: context,
       builder: (BuildContext builder) {
         return ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20), // Arredonda o canto superior esquerdo
-            topRight: Radius.circular(20), // Arredonda o canto superior direito
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
           child: Container(
             color: const Color.fromARGB(255, 240, 245, 249),
             child: Theme(
               data: ThemeData.light().copyWith(
-                colorScheme: ColorScheme.light(
+                colorScheme: const ColorScheme.light(
                   primary: Colors.blue, // Define a cor do texto e dos ícones
                 ),
               ),
@@ -85,7 +143,7 @@ class TaskDateTimeColumn extends StatelessWidget {
     );
 
     if (pickedDate != null) {
-      print('Data selecionada: ${DateFormat('dd/MM/yyyy').format(pickedDate)}');
+      _updateDateTask(DateFormat('dd/MM/yyyy').format(pickedDate));
     }
   }
 
@@ -108,7 +166,7 @@ class TaskDateTimeColumn extends StatelessWidget {
     );
 
     if (pickedTime != null) {
-      print('Hora selecionada: ${pickedTime.format(context)}');
+      _updateTimeTask(pickedTime.format(context));
     }
   }
 
@@ -142,7 +200,7 @@ class TaskDateTimeColumn extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  date,
+                  dateTask,
                   style: const TextStyle(
                     fontSize: 14,
                   ),
@@ -178,7 +236,7 @@ class TaskDateTimeColumn extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  time,
+                  timeTask,
                   style: const TextStyle(
                     fontSize: 14,
                   ),
@@ -194,72 +252,73 @@ class TaskDateTimeColumn extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              const Icon(
-                Icons.notifications,
-                color: Colors.grey,
-                size: 20,
-              ),
-              const SizedBox(width: 10),
-              const Text(
-                'Lembrete',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
-                ),
-              ),
-              const Spacer(),
-              Text(
-                date,
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey,
-                size: 15,
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              const Icon(
-                Icons.repeat,
-                color: Colors.grey,
-                size: 20,
-              ),
-              const SizedBox(width: 10),
-              const Text(
-                'Repetir',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
-                ),
-              ),
-              const Spacer(),
-              Text(
-                date,
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey,
-                size: 15,
-              ),
-            ],
-          ),
+          // const SizedBox(height: 20),
+          // Row(
+          //   children: [
+          //     const Icon(
+          //       Icons.notifications,
+          //       color: Colors.grey,
+          //       size: 20,
+          //     ),
+          //     const SizedBox(width: 10),
+          //     const Text(
+          //       'Lembrete',
+          //       style: TextStyle(
+          //         color: Colors.grey,
+          //         fontSize: 14,
+          //       ),
+          //     ),
+          //     const Spacer(),
+          //     Text(
+          //       widget.date,
+          //       style: const TextStyle(
+          //         fontSize: 14,
+          //       ),
+          //     ),
+          //     const SizedBox(
+          //       width: 5,
+          //     ),
+          //     const Icon(
+          //       Icons.arrow_forward_ios,
+          //       color: Colors.grey,
+          //       size: 15,
+          //     ),
+          //   ],
+          // ),
+          // // const SizedBox(height: 20),
+          // Row(
+          //   children: [
+          //     const Icon(
+          //       Icons.repeat,
+          //       color: Colors.grey,
+          //       size: 20,
+          //     ),
+          //     const SizedBox(width: 10),
+          //     const Text(
+          //       'Repetir',
+          //       style: TextStyle(
+          //         color: Colors.grey,
+          //         fontSize: 14,
+          //       ),
+          //     ),
+          //     const Spacer(),
+          //     Text(
+          //       widget.date,
+          //       style: const TextStyle(
+          //         fontSize: 14,
+          //       ),
+          //     ),
+          //     const SizedBox(
+          //       width: 5,
+          //     ),
+          //     const Icon(
+          //       Icons.arrow_forward_ios,
+          //       color: Colors.grey,
+          //       size: 15,
+          //     ),
+          //   ],
+          // ),
+        
         ],
       ),
     );

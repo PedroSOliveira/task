@@ -213,7 +213,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                 const SizedBox(height: 10),
                 TaskDescriptionColumn(task: widget.task),
                 const SizedBox(height: 10),
-                TaskDateTimeColumn(date: formattedDate, time: formattedTime),
+                TaskDateTimeColumn(date: formattedDate, time: formattedTime, task: widget.task,),
                 const SizedBox(height: 10),
                 const TaskNotesColumn(
                   notes:

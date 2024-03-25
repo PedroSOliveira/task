@@ -23,9 +23,8 @@ class _TaskDescriptionColumnState extends State<TaskDescriptionColumn> {
     _controller.text = widget.task.description;
 
     _focusNode.addListener(() {
-      if (!_focusNode.hasFocus) {
+      if (!_focusNode.hasFocus && _controller != widget.task.description) {
         _updateDescriptionTask();
-        print('Teclado foi fechado');
       }
     });
   }
@@ -61,7 +60,7 @@ class _TaskDescriptionColumnState extends State<TaskDescriptionColumn> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Título',
+                'Descrição',
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 12,
@@ -75,7 +74,7 @@ class _TaskDescriptionColumnState extends State<TaskDescriptionColumn> {
                   controller: _controller,
                   focusNode: _focusNode,
                   style: const TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                      color: Colors.black, fontWeight: FontWeight.bold,),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                   ),
