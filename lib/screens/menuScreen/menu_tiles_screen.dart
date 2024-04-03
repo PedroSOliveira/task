@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:in_app_review/in_app_review.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:task/models/user_model.dart';
 import 'package:task/screens/base/base_screen.dart';
 
@@ -15,8 +20,13 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  UserStorage user = new UserStorage(email: '', name: '', id: '', photo: '');
+  final InAppReview inAppReview = InAppReview.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  final String urlAndroid =
+      'https://play.google.com/store/apps/details?id=com.seven.task';
+
+  final String urlIos = 'https://apps.apple.com/app/id6474642833';
 
   void initialize() async {}
 
@@ -38,6 +48,36 @@ class _MenuScreenState extends State<MenuScreen> {
           (_) => false);
     } catch (e) {
       print(e);
+    }
+  }
+
+  void requestShareApp(BuildContext context) async {
+    try {
+      String url = Platform.isIOS ? urlIos : urlAndroid;
+
+      Share.share('Organize sua rotina e baixe agora: \n $url');
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  void _requestAppRating(BuildContext context) async {
+    try {
+      if (await inAppReview.isAvailable()) {
+        inAppReview.requestReview();
+      } else {
+        inAppReview.openStoreListing(appStoreId: 'com.seven.task');
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  void requestNotificationPermission(BuildContext context) async {
+    try {
+      await OneSignal.Notifications.requestPermission(false);
+    } catch (err) {
+      print(err);
     }
   }
 
@@ -104,31 +144,35 @@ class _MenuScreenState extends State<MenuScreen> {
                     _MenuItem(
                       icon: Icons.privacy_tip,
                       title: 'Políticas de Privacidade',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, '/privacy');
+                      },
                     ),
                     _MenuItem(
                       icon: Icons.description,
                       title: 'Termos de Uso',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, '/terms');
+                      },
+                    ),
+                    _MenuItem(
+                      icon: Icons.notifications_on,
+                      title: 'Notificações',
+                      onTap: () => requestNotificationPermission(context),
+                    ),
+                    _MenuItem(
+                      icon: Icons.share_rounded,
+                      title: 'Compartilhar app',
+                      onTap: () => requestShareApp(context),
+                    ),
+                    _MenuItem(
+                      icon: Icons.star,
+                      title: 'Avaliar app',
+                      onTap: () => _requestAppRating(context),
                     ),
                     _MenuItem(
                       icon: Icons.logout,
                       title: 'Logout',
-                      onTap: () {},
-                    ),
-                    _MenuItem(
-                      icon: Icons.menu,
-                      title: 'Item de Menu 1',
-                      onTap: () {},
-                    ),
-                    _MenuItem(
-                      icon: Icons.menu,
-                      title: 'Item de Menu 2',
-                      onTap: () {},
-                    ),
-                    _MenuItem(
-                      icon: Icons.menu,
-                      title: 'Item de Menu 3',
                       onTap: () {},
                     ),
                   ],

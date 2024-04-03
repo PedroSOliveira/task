@@ -4,9 +4,13 @@ import 'package:task/models/task.dart';
 class TaskService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<List<Task>> getTasks() async {
+  Future<List<Task>> getTasks(String email) async {
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('todo').get();
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('todo')
+          .where('user',
+              isEqualTo: email)
+          .get();
       List<Task> tasks =
           querySnapshot.docs.map((doc) => Task.fromSnapshot(doc)).toList();
       return tasks;

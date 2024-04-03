@@ -43,7 +43,6 @@ class CardTodo extends StatelessWidget {
         _navigateToTaskDetailsScreen(context);
       },
       child: Container(
-        // height: 70,
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.white,

@@ -1,10 +1,114 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:task/components/button_purchase.dart';
+import 'package:task/models/task.dart';
+import 'package:task/services/task_service.dart';
 
-class TaskStatisticsScreen extends StatelessWidget {
+class TaskStatisticsScreen extends StatefulWidget {
   const TaskStatisticsScreen();
+
+  @override
+  State<TaskStatisticsScreen> createState() => _TaskStatisticsScreenState();
+}
+
+class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final TaskService _taskService = TaskService();
+  int totalPendingTasks = 0;
+  int totalDoneTasks = 0;
+  int totalEntretenimento = 0;
+  int totalEstudo = 0;
+  int totalTrabalho = 0;
+  int totalPessoal = 0;
+  int totalEsporte = 0;
+  int totalViagem = 0;
+
+  int totalEntretenimentoPending = 0;
+  int totalEstudoPending = 0;
+  int totalTrabalhoPending = 0;
+  int totalPessoalPending = 0;
+  int totalEsportePending = 0;
+  int totalViagemPending = 0;
+
+  Future<void> _fetchTasks() async {
+    try {
+      setState(() {
+        // isLoading = true;
+      });
+      List<Task> fetchedTasks =
+          await _taskService.getTasks(auth.currentUser!.email!);
+
+      getNumberOfCategoryTasks(fetchedTasks);
+      getNumberOfCategoryAndPendingTasks(fetchedTasks);
+
+      setState(() {
+        totalDoneTasks = getNumberOfCompletedTasks(fetchedTasks);
+        totalPendingTasks = getNumberOfPendingTasks(fetchedTasks);
+      });
+    } catch (e) {
+      print('Error fetching tasks: $e');
+    } finally {
+      setState(() {
+        // isLoading = false;
+      });
+    }
+  }
+
+  int getNumberOfCompletedTasks(List<Task> tasks) {
+    int completedCount = tasks.where((task) => task.isDone).length;
+    return completedCount;
+  }
+
+  int getNumberOfPendingTasks(List<Task> tasks) {
+    int pendingCount = tasks.where((task) => !task.isDone).length;
+    return pendingCount;
+  }
+
+  void getNumberOfCategoryTasks(List<Task> tasks) {
+    int totalTrabalhoTaks =
+        tasks.where((task) => task.category == 'Trabalho').length;
+    int totalEstudoTaks =
+        tasks.where((task) => task.category == 'Estudo').length;
+    int totalViagemTaks =
+        tasks.where((task) => task.category == 'Viagem').length;
+    int totalEsporteTaks =
+        tasks.where((task) => task.category == 'Esporte').length;
+    int totalPessoalTaks =
+        tasks.where((task) => task.category == 'Pessoal').length;
+    setState(() {
+      totalTrabalho = totalTrabalhoTaks;
+      totalEstudo = totalEstudoTaks;
+      totalViagem = totalViagemTaks;
+      totalEsporte = totalEsporteTaks;
+      totalPessoal = totalPessoalTaks;
+    });
+  }
+
+  void getNumberOfCategoryAndPendingTasks(List<Task> tasks) {
+    int totalTrabalhoTaks = tasks
+        .where((task) => !task.isDone && task.category == 'Trabalho')
+        .length;
+    int totalEstudoTaks =
+        tasks.where((task) => !task.isDone && task.category == 'Estudo').length;
+    int totalViagemTaks =
+        tasks.where((task) => !task.isDone && task.category == 'Viagem').length;
+    int totalEsporteTaks = tasks
+        .where((task) => !task.isDone && task.category == 'Esporte')
+        .length;
+    int totalPessoalTaks = tasks
+        .where((task) => !task.isDone && task.category == 'Pessoal')
+        .length;
+    setState(() {
+      totalTrabalhoPending = totalTrabalhoTaks;
+      totalEstudoPending = totalEstudoTaks;
+      totalViagemPending = totalViagemTaks;
+      totalEsportePending = totalEsporteTaks;
+      totalPessoalPending = totalPessoalTaks;
+    });
+  }
+
   Widget _buildStatisticWidget(String value, String label) {
     return Container(
       decoration: BoxDecoration(
@@ -33,6 +137,12 @@ class TaskStatisticsScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _fetchTasks();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 240, 245, 249),
@@ -50,11 +160,13 @@ class TaskStatisticsScreen extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: _buildStatisticWidget("4", "Atividades pendentes"),
+                      child: _buildStatisticWidget(
+                          totalPendingTasks.toString(), "Atividades pendentes"),
                     ),
                     const Gap(15),
                     Expanded(
-                      child: _buildStatisticWidget("4", "Atividades realizadas"),
+                      child: _buildStatisticWidget(
+                          totalDoneTasks.toString(), "Atividades realizadas"),
                     )
                   ],
                 ),
@@ -106,7 +218,8 @@ class TaskStatisticsScreen extends StatelessWidget {
                     PieChart(
                       PieChartData(
                         pieTouchData: PieTouchData(
-                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                          touchCallback:
+                              (FlTouchEvent event, pieTouchResponse) {
                             // setState(() {
                             //   if (!event.isInterestedForInteractions ||
                             //       pieTouchResponse == null ||
@@ -124,7 +237,13 @@ class TaskStatisticsScreen extends StatelessWidget {
                         ),
                         sectionsSpace: 0,
                         centerSpaceRadius: 40,
-                        sections: showingSections(),
+                        sections: showingSections(
+                            totalDoneTasks,
+                            totalTrabalhoPending,
+                            totalEstudoPending,
+                            totalViagemPending,
+                            totalEsportePending,
+                            totalPessoalPending),
                       ),
                     ),
                   ]),
@@ -169,26 +288,26 @@ class TaskStatisticsScreen extends StatelessWidget {
     String text;
     switch (value.toInt()) {
       case 0:
-        text = 'Seg';
+        text = 'Trabalho';
         break;
       case 1:
-        text = 'Ter';
+        text = 'Viagem';
         break;
       case 2:
-        text = 'Qua';
+        text = 'Estudo';
         break;
       case 3:
-        text = 'Qui';
+        text = 'Esporte';
         break;
       case 4:
-        text = 'Sex';
+        text = 'Pessoal';
         break;
-      case 5:
-        text = 'Sab';
-        break;
-      case 6:
-        text = 'Dom';
-        break;
+      // case 5:
+      //   text = 'Sab';
+      //   break;
+      // case 6:
+      //   text = 'Dom';
+      //   break;
       default:
         text = '';
         break;
@@ -238,17 +357,7 @@ class TaskStatisticsScreen extends StatelessWidget {
           x: 0,
           barRods: [
             BarChartRodData(
-              toY: 8,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 1,
-          barRods: [
-            BarChartRodData(
-              toY: 10,
+              toY: totalTrabalho.toDouble(),
               gradient: _barsGradient,
             )
           ],
@@ -258,7 +367,17 @@ class TaskStatisticsScreen extends StatelessWidget {
           x: 2,
           barRods: [
             BarChartRodData(
-              toY: 14,
+              toY: totalEstudo.toDouble(),
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 1,
+          barRods: [
+            BarChartRodData(
+              toY: totalViagem.toDouble(),
               gradient: _barsGradient,
             )
           ],
@@ -268,7 +387,7 @@ class TaskStatisticsScreen extends StatelessWidget {
           x: 3,
           barRods: [
             BarChartRodData(
-              toY: 15,
+              toY: totalEsporte.toDouble(),
               gradient: _barsGradient,
             )
           ],
@@ -278,27 +397,7 @@ class TaskStatisticsScreen extends StatelessWidget {
           x: 4,
           barRods: [
             BarChartRodData(
-              toY: 13,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 5,
-          barRods: [
-            BarChartRodData(
-              toY: 10,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 6,
-          barRods: [
-            BarChartRodData(
-              toY: 16,
+              toY: totalPessoal.toDouble(),
               gradient: _barsGradient,
             )
           ],
@@ -375,62 +474,107 @@ class BarChartSample3State extends State<BarChartSample3> {
   }
 }
 
-List<PieChartSectionData> showingSections() {
-  return List.generate(4, (i) {
+List<PieChartSectionData> showingSections(
+  int totalDoneTasks,
+  int totalTrabalhoPending,
+  int totalEstudoPending,
+  int totalViagemPending,
+  int totalEsportePending,
+  int totalPessoalPending,
+) {
+  return List.generate(6, (i) {
     final isTouched = i == 0;
-    final fontSize = isTouched ? 25.0 : 16.0;
-    final radius = isTouched ? 60.0 : 50.0;
-    const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+    final fontSize = isTouched ? 16.0 : 16.0;
+    final radius = isTouched ? 55.0 : 50.0;
+    const shadows = [Shadow(color: Colors.white, blurRadius: 1)];
     switch (i) {
       case 0:
         return PieChartSectionData(
-          color: Colors.blue.shade400,
-          value: 40,
-          title: '40%',
+          color: Colors.blue.shade200,
+          value: totalDoneTasks != 0
+              ? (totalTrabalhoPending / totalDoneTasks * 100).toDouble()
+              : 0,
+          title: 'Trab',
           radius: radius,
           titleStyle: TextStyle(
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
-            color: Colors.blue.shade400,
+            color: Colors.white,
             shadows: shadows,
           ),
         );
       case 1:
         return PieChartSectionData(
-          color: Colors.blue.shade600,
-          value: 30,
-          title: '30%',
+          color: Colors.blue.shade400,
+          value: totalDoneTasks != 0
+              ? (totalEstudoPending / totalDoneTasks * 100).toDouble()
+              : 0,
+          title: 'Estu',
           radius: radius,
           titleStyle: TextStyle(
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
-            color: Colors.blue.shade600,
+            color: Colors.white,
             shadows: shadows,
           ),
         );
       case 2:
         return PieChartSectionData(
-          color: Colors.blue.shade800,
-          value: 15,
-          title: '15%',
+          color: Colors.blue.shade600,
+          value: totalDoneTasks != 0
+              ? (totalViagemPending / totalDoneTasks * 100).toDouble()
+              : 0,
+          title: 'Viag',
           radius: radius,
           titleStyle: TextStyle(
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
-            color: Colors.blue.shade800,
+            color: Colors.white,
             shadows: shadows,
           ),
         );
       case 3:
         return PieChartSectionData(
-          color: Colors.blue.shade900,
-          value: 15,
-          title: '15%',
+          color: Colors.blue.shade800,
+          value: totalDoneTasks != 0
+              ? (totalEsportePending / totalDoneTasks * 100).toDouble()
+              : 0,
+          title: 'Espo',
           radius: radius,
           titleStyle: TextStyle(
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
-            color: Colors.blue.shade900,
+            color: Colors.white,
+            shadows: shadows,
+          ),
+        );
+      case 4:
+        return PieChartSectionData(
+          color: Colors.blue.shade900,
+          value: totalDoneTasks != 0
+              ? (totalPessoalPending / totalDoneTasks * 100).toDouble()
+              : 0,
+          title: 'Pess',
+          radius: radius,
+          titleStyle: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            shadows: shadows,
+          ),
+        );
+      case 5:
+        return PieChartSectionData(
+          color: Colors.blueAccent.shade400,
+          value: totalDoneTasks != 0
+              ? (totalPessoalPending / totalDoneTasks * 100).toDouble()
+              : 0,
+          title: 'Entr',
+          radius: radius,
+          titleStyle: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
             shadows: shadows,
           ),
         );

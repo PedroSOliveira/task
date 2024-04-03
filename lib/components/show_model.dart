@@ -18,12 +18,12 @@ import 'package:task/widget/text_field_widget.dart';
 import 'package:toastification/toastification.dart';
 
 class AddNewTaskModel extends ConsumerWidget {
-  AddNewTaskModel({
-    super.key,
-    required TextEditingController this.fieldTitleController,
-    required TextEditingController this.fieldDescriptionController,
-    required this.getTasks,
-  });
+  AddNewTaskModel(
+      {super.key,
+      required TextEditingController this.fieldTitleController,
+      required TextEditingController this.fieldDescriptionController,
+      required this.getTasks,
+      required this.user});
   final Function getTasks;
 
   final TextEditingController fieldTitleController;
@@ -31,6 +31,8 @@ class AddNewTaskModel extends ConsumerWidget {
   final TaskService _taskService = TaskService();
   final selectedCategoryProvider = StateProvider<String>((ref) => '');
   final loading = StateProvider<bool>((ref) => false);
+
+  final String user;
 
   List<String> categories = [
     'Trabalho',
@@ -144,15 +146,20 @@ class AddNewTaskModel extends ConsumerWidget {
       dateTimestamp.nanoseconds,
     );
 
+    final convertTime =
+        combinedTimestamp.toDate().add(const Duration(hours: -3));
+
+    final Timestamp adjustedTimestamp = Timestamp.fromDate(convertTime);
+
     Task task = Task(
       title: fieldTitleController.text,
       description: fieldDescriptionController.text,
       category: category,
-      date: combinedTimestamp,
+      date: adjustedTimestamp,
       isDone: false,
       notes: [],
-      user: 'vinicius.oliv19@gmail.com',
-      id: 'jkdsj',
+      user: user,
+      id: '',
     );
 
     return task;
@@ -317,8 +324,9 @@ class AddNewTaskModel extends ConsumerWidget {
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        !isLoading ? Colors.blue.shade800 : Colors.grey.shade400,
+                    backgroundColor: !isLoading
+                        ? Colors.blue.shade800
+                        : Colors.grey.shade400,
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(

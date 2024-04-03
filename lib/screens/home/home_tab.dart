@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:task/components/show_model.dart';
 import 'package:task/models/task.dart';
+import 'package:task/screens/calendar/calendar_screen.dart';
 import 'package:task/screens/home/components/category_tile.dart';
 import 'package:task/screens/login/login_screen.dart';
 import 'package:task/screens/menuScreen/menu_tiles_screen.dart';
@@ -19,16 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> categories = [
-    'Todas',
-    'Trabalho',
-    'Entretenimento',
-    'Estudo',
-    'Viagem',
-    'Pessoal'
-  ];
-
-  String selectedCategory = 'Todas';
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -40,13 +32,24 @@ class _HomePageState extends State<HomePage> {
 
   final themeModeManager = ThemeModeManager();
 
-  final String allCategories = 'Todas';
-
   bool isLoading = false;
 
   final TextEditingController _fieldTitleController = TextEditingController();
   final TextEditingController _fieldDescriptionController =
       TextEditingController();
+
+  List<String> categories = [
+    'Todas',
+    'Trabalho',
+    'Entretenimento',
+    'Estudo',
+    'Viagem',
+    'Pessoal'
+  ];
+
+  final String allCategories = 'Todas';
+
+  String selectedCategory = 'Todas';
 
   void _selectedOptionCategory(String option) {
     setState(() {
@@ -83,6 +86,7 @@ class _HomePageState extends State<HomePage> {
       builder: (context) => AddNewTaskModel(
         fieldTitleController: _fieldTitleController,
         fieldDescriptionController: _fieldDescriptionController,
+        user: auth.currentUser!.email!,
         getTasks: _fetchTasks,
       ),
     );
@@ -95,7 +99,8 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         isLoading = true;
       });
-      List<Task> fetchedTasks = await _taskService.getTasks();
+      List<Task> fetchedTasks =
+          await _taskService.getTasks(auth.currentUser!.email!);
       List<Task> sortedTasks = sortTasksByIsDone(fetchedTasks);
       setState(() {
         tasks = sortedTasks;
@@ -116,6 +121,11 @@ class _HomePageState extends State<HomePage> {
           ? ThemeMode.dark
           : ThemeMode.light;
     });
+  }
+
+  void navigateToCalendarScreen(BuildContext context) {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => CalendarPage()));
   }
 
   List<Task> sortTasksByIsDone(List<Task> tasks) {
@@ -155,6 +165,7 @@ class _HomePageState extends State<HomePage> {
                   builder: (context) => AddNewTaskModel(
                     fieldDescriptionController: _fieldDescriptionController,
                     fieldTitleController: _fieldTitleController,
+                    user: auth.currentUser!.email!,
                     getTasks: _fetchTasks,
                   ),
                 );
@@ -187,9 +198,10 @@ class _HomePageState extends State<HomePage> {
                   onPressed: toggleTheme,
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => navigateToCalendarScreen(context),
                   icon: const Icon(
-                    CupertinoIcons.bell,
+                    Icons.calendar_month,
+                    // CupertinoIcons.bell,
                     color: Colors.grey,
                   ),
                 ),

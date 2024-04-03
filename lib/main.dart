@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:task/screens/loading/initialization_loading_screen.dart';
+import 'package:task/screens/privacy/privacy.dart';
+import 'package:task/screens/terms/terms.dart';
 import 'package:task/theme/manager_theme.dart';
 
 void main() async {
@@ -52,6 +54,10 @@ class _MyAppState extends State<MyApp> {
           GlobalWidgetsLocalizations.delegate
         ],
         supportedLocales: const [Locale('pt', 'BR')],
+        routes: {
+        '/terms': (context) => TermsScreen(),
+        '/privacy': (context) => PrivacyScreen(),
+      },
       ),
     );
   }

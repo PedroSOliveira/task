@@ -18,7 +18,7 @@ class BaseScreen extends StatefulWidget {
   State<BaseScreen> createState() => _BaseScreenState();
 }
 
-class _BaseScreenState extends State<BaseScreen> {
+class _BaseScreenState extends State<BaseScreen> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -34,8 +34,8 @@ class _BaseScreenState extends State<BaseScreen> {
         index: _selectedIndex,
         children: [
           HomePage(),
-          CalendarPage(),
-          PomodoroScreen(),
+          // CalendarPage(),
+          // PomodoroScreen(),
           TaskStatisticsScreen(),
         ],
       ),
@@ -52,14 +52,14 @@ class _BaseScreenState extends State<BaseScreen> {
             ),
             label: 'Tarefas',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month),
-            label: 'Calendário',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.lock_clock_rounded),
-            label: 'Pomodoro',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.calendar_month),
+          //   label: 'Calendário',
+          // ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.lock_clock_rounded),
+          //   label: 'Pomodoro',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
             label: 'Dashboard',
