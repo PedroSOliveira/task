@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:928212580002:android:ed55455234ae567e5609fb",
+        "android_client_info": {
+          "package_name": "com.golden.simuladoenem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928212580002-gng8n40d6vuuten27fhtrk4o70g0bcfs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANVCsScD5sTbXkhAYHaDOJJpbhc4pXtW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928212580002-gng8n40d6vuuten27fhtrk4o70g0bcfs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "928212580002-ei3rvegh0m8d38np45h6l96svr50k7pe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.seven.task"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:928212580002:android:eba3deb573bcc9b95609fb",
         "android_client_info": {
           "package_name": "com.seven.task"
@@ -55,7 +91,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-1837125269900681~8427791298"
     }
   ],
   "configuration_version": "1"
