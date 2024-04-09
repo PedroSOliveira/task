@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:task/ads/bottom_banner_ad.dart';
 import 'package:task/components/button_purchase.dart';
 import 'package:task/models/task.dart';
 import 'package:task/services/task_service.dart';
@@ -155,7 +156,11 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                CardPurchase(),
+                // CardPurchase(),
+                const Gap(20),
+
+                const BottomBannerAd(),
+
                 const Gap(8),
                 Row(
                   children: [
