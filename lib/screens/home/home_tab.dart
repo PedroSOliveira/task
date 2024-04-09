@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:task/ads/bottom_banner_ad.dart';
 import 'package:task/components/show_model.dart';
 import 'package:task/models/task.dart';
 import 'package:task/screens/calendar/calendar_screen.dart';
@@ -151,6 +152,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // bottomNavigationBar: const BottomBannerAd(),
       backgroundColor: const Color.fromARGB(255, 242, 245, 247),
       floatingActionButton: isLoading
           ? null
@@ -247,6 +249,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(height: 20),
+              // const BottomBannerAd(),
               isLoading
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
