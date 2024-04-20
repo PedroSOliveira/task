@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task/ads/interstitial_with_mediation.dart';
 import 'package:task/components/loading_screen.dart';
 import 'package:task/firebase_options.dart';
 import 'package:task/models/user_model.dart';
@@ -59,7 +60,7 @@ class _InitializationLoadingScreenState
       // OneSignal.shared.setAppId("980428f3-3aca-47bb-b4b5-5b4cd00ef2c9")
     ]);
 
-    // InterstitialWithMediation.instance.load();
+    InterstitialWithMediation.instance.load();
     goToLoadAppOpenScreen();
   }
 

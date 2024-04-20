@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:task/ads/interstitial_with_mediation.dart';
 import 'package:task/constants/app_style.dart';
 import 'package:task/models/task.dart';
 import 'package:task/provider/date_time_provider.dart';
@@ -111,7 +112,7 @@ class AddNewTaskModel extends ConsumerWidget {
   }
 
   void saveNewTask(BuildContext context, WidgetRef ref, String category,
-      String date, String time) {
+      String date, String time) async {
     try {
       bool isEmptyFields = _verifyFieldsIsEmpty();
 
@@ -125,6 +126,8 @@ class AddNewTaskModel extends ConsumerWidget {
         _taskService.addTask(task);
 
         showMessageNewTaskRegister(context);
+
+        await InterstitialWithMediation.instance.show();
 
         getTasks();
 

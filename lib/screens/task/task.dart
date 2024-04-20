@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:task/ads/bottom_banner_ad.dart';
+import 'package:task/ads/interstitial_with_mediation.dart';
 import 'package:task/models/task.dart';
 import 'package:task/screens/base/base_screen.dart';
 
@@ -168,6 +170,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
 
     return WillPopScope(
       onWillPop: () async {
+        await InterstitialWithMediation.instance.show();
         widget.getTasks();
         return true;
       },
@@ -201,6 +204,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
             )
           ],
         ),
+        bottomNavigationBar: const BottomBannerAd(),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -213,7 +217,11 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                 const SizedBox(height: 10),
                 TaskDescriptionColumn(task: widget.task),
                 const SizedBox(height: 10),
-                TaskDateTimeColumn(date: formattedDate, time: formattedTime, task: widget.task,),
+                TaskDateTimeColumn(
+                  date: formattedDate,
+                  time: formattedTime,
+                  task: widget.task,
+                ),
                 const SizedBox(height: 10),
                 const TaskNotesColumn(
                   notes:

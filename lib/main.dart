@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:task/firebase_options.dart';
 import 'package:task/screens/loading/initialization_loading_screen.dart';
 import 'package:task/screens/privacy/privacy.dart';
 import 'package:task/screens/terms/terms.dart';
@@ -32,6 +34,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     // InterstitialWithMediation.instance.load();
+      Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
     themeMode = themeModeManager.themeMode;
   }

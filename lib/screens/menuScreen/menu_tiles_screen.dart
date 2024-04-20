@@ -8,6 +8,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:task/models/user_model.dart';
 import 'package:task/screens/base/base_screen.dart';
+import 'package:task/screens/login/login_screen.dart';
 
 import 'package:task/services/user_service.dart';
 import 'package:task/theme/manager_theme.dart';
@@ -79,6 +80,13 @@ class _MenuScreenState extends State<MenuScreen> {
     } catch (err) {
       print(err);
     }
+  }
+
+  void _handleSignOut(BuildContext context) async {
+    await auth.signOut();
+    final pageRoute = MaterialPageRoute(builder: (context) => LoginScreen());
+
+    Navigator.of(context).pushReplacement(pageRoute);
   }
 
   @override
@@ -173,7 +181,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     _MenuItem(
                       icon: Icons.logout,
                       title: 'Logout',
-                      onTap: () {},
+                      onTap: () => _handleSignOut(context),
                     ),
                   ],
                 ),

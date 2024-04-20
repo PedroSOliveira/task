@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:task/ads/bottom_banner_ad.dart';
+import 'package:task/ads/interstitial_with_mediation.dart';
 import 'package:task/components/show_model.dart';
 import 'package:task/models/task.dart';
 import 'package:task/screens/calendar/calendar_screen.dart';
@@ -107,6 +108,7 @@ class _HomePageState extends State<HomePage> {
         tasks = sortedTasks;
         allTasks = sortedTasks;
       });
+      InterstitialWithMediation.instance.load();
     } catch (e) {
       print('Error fetching tasks: $e');
     } finally {
