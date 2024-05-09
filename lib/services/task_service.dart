@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:task/mocks/fakes_tasks.dart';
 import 'package:task/models/task.dart';
 
 class TaskService {
@@ -8,11 +9,21 @@ class TaskService {
     try {
       QuerySnapshot querySnapshot = await _firestore
           .collection('todo')
-          .where('user',
-              isEqualTo: email)
+          .where('user', isEqualTo: email)
           .get();
       List<Task> tasks =
           querySnapshot.docs.map((doc) => Task.fromSnapshot(doc)).toList();
+      return tasks;
+    } catch (e) {
+      print('Error fetching tasks: $e');
+      return [];
+    }
+  }
+
+  Future<List<Task>> getAlTasks() async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore.collection('todo').get();
+      List<Task> tasks = mockTasks;
       return tasks;
     } catch (e) {
       print('Error fetching tasks: $e');

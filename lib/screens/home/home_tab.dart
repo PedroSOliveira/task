@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:task/ads/bottom_banner_ad.dart';
 import 'package:task/ads/interstitial_with_mediation.dart';
 import 'package:task/components/show_model.dart';
+import 'package:task/mocks/fakes_tasks.dart';
 import 'package:task/models/task.dart';
 import 'package:task/screens/calendar/calendar_screen.dart';
 import 'package:task/screens/home/components/category_tile.dart';
@@ -101,8 +102,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         isLoading = true;
       });
-      List<Task> fetchedTasks =
-          await _taskService.getTasks(auth.currentUser!.email!);
+      List<Task> fetchedTasks = mockTasks;
       List<Task> sortedTasks = sortTasksByIsDone(fetchedTasks);
       setState(() {
         tasks = sortedTasks;
@@ -264,13 +264,13 @@ class _HomePageState extends State<HomePage> {
                       ],
                     )
                   : Container(
-                      child: tasks.isNotEmpty
+                      child: mockTasks.isNotEmpty
                           ? ListView.separated(
                               scrollDirection: Axis.vertical,
-                              itemCount: tasks.length,
+                              itemCount: mockTasks.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) => CardTodo(
-                                task: tasks[index],
+                                task: mockTasks[index],
                                 getTasks: _fetchTasks,
                               ),
                               separatorBuilder: (context, index) =>

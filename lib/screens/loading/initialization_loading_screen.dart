@@ -81,7 +81,7 @@ class _InitializationLoadingScreenState
 
     bool user = getUser();
 
-    if (auth.currentUser != null) {
+    if (auth.currentUser == null) {
       final pageRoute = MaterialPageRoute(
           builder: (context) => BaseScreen(
                 themeModeManager: themeModeManager,
