@@ -154,7 +154,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const BottomBannerAd(),
+      // bottomNavigationBar: const BottomBannerAd(),
       backgroundColor: const Color.fromARGB(255, 242, 245, 247),
       floatingActionButton: isLoading
           ? null
@@ -250,8 +250,8 @@ class _HomePageState extends State<HomePage> {
                   itemCount: categories.length,
                 ),
               ),
-              const Gap(20),
-              const BottomBannerAd(),
+              // const Gap(20),
+              // const BottomBannerAd(),
               const Gap(20),
               isLoading
                   ? Column(
