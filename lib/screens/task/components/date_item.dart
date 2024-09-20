@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart' as cdp;
 import 'package:task/models/task.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/theme/manager_theme.dart';
 
 class TaskDateTimeColumn extends StatefulWidget {
   final String date;
@@ -170,11 +171,20 @@ class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
     }
   }
 
+  Color get contentBackgroundColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.white;
+
+  Color get textColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade500 : Colors.grey;
+
+  Color get iconColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade600 : Colors.grey;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: contentBackgroundColor,
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(16),
@@ -185,32 +195,34 @@ class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
             onTap: () => _showDatePicker(context),
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.event,
-                  color: Colors.grey,
+                  color: iconColor,
                   size: 20,
                 ),
                 const SizedBox(width: 10),
-                const Text(
+                Text(
                   'Data',
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
                 ),
                 const Spacer(),
                 Text(
                   dateTask,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
+                    color: textColor,
                   ),
                 ),
                 const SizedBox(
                   width: 5,
                 ),
-                const Icon(
+                Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.grey,
+                  color: iconColor,
                   size: 15,
                 ),
               ],
@@ -221,32 +233,34 @@ class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
             onTap: () => _showTimePicker(context),
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.access_time,
-                  color: Colors.grey,
+                  color: iconColor,
                   size: 20,
                 ),
                 const SizedBox(width: 10),
-                const Text(
+                Text(
                   'Hora',
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
                 ),
                 const Spacer(),
                 Text(
                   timeTask,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
+                    color: textColor,
                   ),
                 ),
                 const SizedBox(
                   width: 5,
                 ),
-                const Icon(
+                Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.grey,
+                  color: iconColor,
                   size: 15,
                 ),
               ],
@@ -318,7 +332,6 @@ class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
           //     ),
           //   ],
           // ),
-        
         ],
       ),
     );

@@ -161,6 +161,10 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
     );
   }
 
+  Color get backgroundColor => ThemeModeManager.isDark
+      ? Colors.grey.shade900
+      : const Color.fromARGB(255, 240, 245, 249);
+
   @override
   Widget build(BuildContext context) {
     String formattedDate =
@@ -175,10 +179,10 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
         return true;
       },
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 240, 245, 249),
+        backgroundColor: backgroundColor,
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 240, 245, 249),
-          foregroundColor: Colors.black,
+          backgroundColor: backgroundColor,
+          foregroundColor: Colors.grey,
           elevation: 0,
           actions: [
             Padding(

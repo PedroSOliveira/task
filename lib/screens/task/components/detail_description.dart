@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task/models/task.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/theme/manager_theme.dart';
 
 class TaskDescriptionColumn extends StatefulWidget {
   final Task task;
@@ -45,11 +46,14 @@ class _TaskDescriptionColumnState extends State<TaskDescriptionColumn> {
     super.dispose();
   }
 
+  Color get contentBackgroundColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.white;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: contentBackgroundColor,
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(20),
@@ -74,7 +78,9 @@ class _TaskDescriptionColumnState extends State<TaskDescriptionColumn> {
                   controller: _controller,
                   focusNode: _focusNode,
                   style: const TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold,),
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                   ),

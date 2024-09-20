@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:task/models/task.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/theme/manager_theme.dart';
 
 class TaskTitleColumn extends StatefulWidget {
   final Task task;
@@ -25,7 +26,7 @@ class _TaskTitleColumnState extends State<TaskTitleColumn> {
 
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
-       _updateTitleTask();
+        _updateTitleTask();
         print('Teclado foi fechado');
       }
     });
@@ -47,11 +48,14 @@ class _TaskTitleColumnState extends State<TaskTitleColumn> {
     super.dispose();
   }
 
+  Color get contentBackgroundColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.white;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: contentBackgroundColor,
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(20),
