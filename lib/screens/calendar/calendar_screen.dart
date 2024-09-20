@@ -98,6 +98,15 @@ class _CalendarPageState extends State<CalendarPage> {
     _fetchTasks();
   }
 
+  Color get backgroundColor => ThemeModeManager.isDark
+      ? Colors.grey.shade900
+      : const Color.fromARGB(255, 240, 245, 249);
+
+  Color get calendarColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.white;
+
+  Color get iconNotFoundColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade700 : Colors.blue.shade200;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -108,7 +117,7 @@ class _CalendarPageState extends State<CalendarPage> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back,
               color: Colors.grey,
             ),
@@ -121,9 +130,9 @@ class _CalendarPageState extends State<CalendarPage> {
                           )));
             },
           ),
-          backgroundColor: const Color.fromARGB(255, 240, 245, 249),
+          backgroundColor: backgroundColor,
         ),
-        backgroundColor: const Color.fromARGB(255, 240, 245, 249),
+        backgroundColor: backgroundColor,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -133,8 +142,9 @@ class _CalendarPageState extends State<CalendarPage> {
                   Container(
                     height: 378,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white),
+                      borderRadius: BorderRadius.circular(10),
+                      color: calendarColor,
+                    ),
                     child: Theme(
                       data: ThemeData.light().copyWith(
                         colorScheme: const ColorScheme.light(
@@ -181,7 +191,7 @@ class _CalendarPageState extends State<CalendarPage> {
                             const Gap(50),
                             Icon(
                               Icons.announcement,
-                              color: Colors.blue.shade200,
+                              color: iconNotFoundColor,
                               size: 100,
                             ),
                             const Gap(10),
