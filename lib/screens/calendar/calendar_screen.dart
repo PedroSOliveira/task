@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
+import 'package:task/mocks/fakes_tasks.dart';
 import 'package:task/models/task.dart';
 import 'package:task/screens/base/base_screen.dart';
 import 'package:task/services/task_service.dart';
@@ -74,8 +75,7 @@ class _CalendarPageState extends State<CalendarPage> {
       setState(() {
         isLoading = true;
       });
-      List<Task> fetchedTasks =
-          await _taskService.getTasks(auth.currentUser!.email!);
+      List<Task> fetchedTasks = mockTasks;
       List<Task> sortedTasks = sortTasksByIsDone(fetchedTasks);
       List<Task> todayTasks = await filterTasksByToday(sortedTasks);
 

@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                   builder: (context) => AddNewTaskModel(
                     fieldDescriptionController: _fieldDescriptionController,
                     fieldTitleController: _fieldTitleController,
-                    user: auth.currentUser!.email!,
+                    user: "teste.dev@gmail.com",
                     getTasks: _fetchTasks,
                   ),
                 );

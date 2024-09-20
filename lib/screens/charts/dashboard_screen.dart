@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:task/ads/bottom_banner_ad.dart';
 import 'package:task/components/button_purchase.dart';
+import 'package:task/mocks/fakes_tasks.dart';
 import 'package:task/models/task.dart';
 import 'package:task/services/task_service.dart';
 
@@ -38,8 +39,7 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
       setState(() {
         // isLoading = true;
       });
-      List<Task> fetchedTasks =
-          await _taskService.getTasks(auth.currentUser!.email!);
+      List<Task> fetchedTasks = mockTasksDash;
 
       getNumberOfCategoryTasks(fetchedTasks);
       getNumberOfCategoryAndPendingTasks(fetchedTasks);
@@ -223,20 +223,20 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
                     PieChart(
                       PieChartData(
                         pieTouchData: PieTouchData(
-                          touchCallback:
-                              (FlTouchEvent event, pieTouchResponse) {
-                            // setState(() {
-                            //   if (!event.isInterestedForInteractions ||
-                            //       pieTouchResponse == null ||
-                            //       pieTouchResponse.touchedSection == null) {
-                            //     touchedIndex = -1;
-                            //     return;
-                            //   }
-                            //   touchedIndex = pieTouchResponse
-                            //       .touchedSection!.touchedSectionIndex;
-                            // });
-                          },
-                        ),
+                            // touchCallback:
+                            //     (FlTouchEvent event, pieTouchResponse) {
+                            //   // setState(() {
+                            //   //   if (!event.isInterestedForInteractions ||
+                            //   //       pieTouchResponse == null ||
+                            //   //       pieTouchResponse.touchedSection == null) {
+                            //   //     touchedIndex = -1;
+                            //   //     return;
+                            //   //   }
+                            //   //   touchedIndex = pieTouchResponse
+                            //   //       .touchedSection!.touchedSectionIndex;
+                            //   // });
+                            // },
+                            ),
                         borderData: FlBorderData(
                           show: false,
                         ),
