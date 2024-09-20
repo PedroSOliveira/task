@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:task/models/task.dart';
 import 'package:task/screens/task/task.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/theme/manager_theme.dart';
 
 class CardTodo extends StatelessWidget {
   CardTodo({Key? key, required this.task, required this.getTasks})
@@ -32,6 +33,12 @@ class CardTodo extends StatelessWidget {
     }
   }
 
+  Color get optionBackgroundColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.white;
+
+  Color get textColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade400 : Colors.grey;
+
   @override
   Widget build(BuildContext context) {
     DateTime dateTime = task.date.toDate();
@@ -45,7 +52,7 @@ class CardTodo extends StatelessWidget {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: optionBackgroundColor,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
@@ -62,20 +69,23 @@ class CardTodo extends StatelessWidget {
                       decoration: task.isDone
                           ? TextDecoration.lineThrough
                           : TextDecoration.none,
+                      color: textColor,
                     ),
                   ),
                   const Gap(5),
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.calendar_month,
                         size: 18,
-                        color: Colors.grey,
+                        color: textColor,
                       ),
                       const Gap(5),
                       Text(
                         formattedDate,
-                        style: const TextStyle(color: Colors.grey),
+                        style: TextStyle(
+                          color: textColor,
+                        ),
                       ),
                     ],
                   ),

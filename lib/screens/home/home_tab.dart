@@ -151,11 +151,25 @@ class _HomePageState extends State<HomePage> {
     _fetchTasks();
   }
 
+  Color get backgroundColor => ThemeModeManager.isDark
+      ? Colors.grey.shade900
+      : const Color.fromARGB(255, 242, 245, 247);
+  Color get optionBackgroundColor => ThemeModeManager.isDark
+      ? Colors.grey.shade800
+      : const Color.fromARGB(255, 242, 245, 247);
+
+  Color get appBarBackgroundColor => ThemeModeManager.isDark
+      ? Colors.grey.shade900
+      : const Color.fromARGB(255, 240, 245, 249);
+
+  Color get floatButtonBackgroundColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade700 : Colors.blue.shade500;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: const BottomBannerAd(),
-      backgroundColor: const Color.fromARGB(255, 242, 245, 247),
+      backgroundColor: backgroundColor,
       floatingActionButton: isLoading
           ? null
           : FloatingActionButton(
@@ -175,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               elevation: 1,
-              backgroundColor: Colors.blue.shade500, // Ícone
+              backgroundColor: floatButtonBackgroundColor, // Ícone
               shape: const CircleBorder(),
               child: const Icon(
                 Icons.add,
@@ -184,7 +198,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 240, 245, 249),
+        backgroundColor: appBarBackgroundColor,
         iconTheme: const IconThemeData(color: Colors.blue),
         centerTitle: true,
         actions: [
