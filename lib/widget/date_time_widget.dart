@@ -3,20 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:task/constants/app_style.dart';
+import 'package:task/theme/manager_theme.dart';
 
 class DateTimeWidget extends ConsumerWidget {
-  const DateTimeWidget(
-      {super.key,
-      required this.icon,
-      required this.titleText,
-      required this.valueText,
-      required this.onTap,
-      });
+  const DateTimeWidget({
+    super.key,
+    required this.icon,
+    required this.titleText,
+    required this.valueText,
+    required this.onTap,
+  });
 
   final IconData icon;
   final String titleText;
   final String valueText;
   final VoidCallback onTap;
+
+  Color get contentBackgroundColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.grey.shade200;
+
+  Color get textColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade500 : Colors.grey.shade800;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,8 +39,8 @@ class DateTimeWidget extends ConsumerWidget {
           Material(
             child: Ink(
               decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(10)),
+                  color: contentBackgroundColor,
+                  borderRadius: BorderRadius.circular(0)),
               child: InkWell(
                 borderRadius: BorderRadius.circular(10),
                 onTap: () => onTap(),
@@ -41,14 +48,22 @@ class DateTimeWidget extends ConsumerWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
+                    color: contentBackgroundColor,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
                     children: [
-                      Icon(icon),
+                      Icon(
+                        icon,
+                        color: textColor,
+                      ),
                       const Gap(6),
-                      Text(valueText),
+                      Text(
+                        valueText,
+                        style: TextStyle(
+                          color: textColor,
+                        ),
+                      ),
                     ],
                   ),
                 ),

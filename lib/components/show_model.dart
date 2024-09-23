@@ -13,6 +13,7 @@ import 'package:task/provider/loading_save_task.dart';
 import 'package:task/provider/radio_provider.dart';
 import 'package:task/screens/home/components/category_tile.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/theme/manager_theme.dart';
 import 'package:task/widget/date_time_widget.dart';
 import 'package:task/widget/radio_widget.dart';
 import 'package:task/widget/text_field_widget.dart';
@@ -188,6 +189,12 @@ class AddNewTaskModel extends ConsumerWidget {
     return false;
   }
 
+  Color get contentBackgroundColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade900 : Colors.white;
+
+  Color get textTitleColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade500 : Colors.grey;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateProv = ref.watch(dateProvider);
@@ -199,13 +206,13 @@ class AddNewTaskModel extends ConsumerWidget {
       padding: const EdgeInsets.all(30),
       height: MediaQuery.of(context).size.height * 0.80,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: contentBackgroundColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+          SizedBox(
             width: double.infinity,
             child: Text(
               "Nova atividade",
@@ -213,7 +220,7 @@ class AddNewTaskModel extends ConsumerWidget {
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: textTitleColor,
               ),
             ),
           ),

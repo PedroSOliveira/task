@@ -51,6 +51,9 @@ class _TaskTitleColumnState extends State<TaskTitleColumn> {
   Color get contentBackgroundColor =>
       ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.white;
 
+  Color get textColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade500 : Colors.black;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -70,6 +73,7 @@ class _TaskTitleColumnState extends State<TaskTitleColumn> {
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 12,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 5),
@@ -78,8 +82,9 @@ class _TaskTitleColumnState extends State<TaskTitleColumn> {
                 child: TextFormField(
                   controller: _controller,
                   focusNode: _focusNode,
-                  style: const TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: textColor,
+                  ),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                   ),

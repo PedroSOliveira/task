@@ -49,6 +49,9 @@ class _TaskDescriptionColumnState extends State<TaskDescriptionColumn> {
   Color get contentBackgroundColor =>
       ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.white;
 
+  Color get textColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade500 : Colors.black;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -67,6 +70,7 @@ class _TaskDescriptionColumnState extends State<TaskDescriptionColumn> {
                 'Descrição',
                 style: TextStyle(
                   color: Colors.grey,
+                  fontWeight: FontWeight.bold,
                   fontSize: 12,
                 ),
               ),
@@ -77,9 +81,8 @@ class _TaskDescriptionColumnState extends State<TaskDescriptionColumn> {
                   maxLines: 5,
                   controller: _controller,
                   focusNode: _focusNode,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                  style: TextStyle(
+                    color: textColor,
                   ),
                   decoration: const InputDecoration(
                     border: InputBorder.none,

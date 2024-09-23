@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task/theme/manager_theme.dart';
 
 class TextFieldWidget extends StatelessWidget {
   TextFieldWidget(
@@ -11,12 +12,15 @@ class TextFieldWidget extends StatelessWidget {
   final String hintText;
   final int maxLine;
 
+  Color get contentBackgroundColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.grey.shade200;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: contentBackgroundColor,
         borderRadius: BorderRadius.circular(8),
       ),
       child: TextField(
