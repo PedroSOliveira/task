@@ -154,6 +154,7 @@ class _HomePageState extends State<HomePage> {
   Color get backgroundColor => ThemeModeManager.isDark
       ? Colors.grey.shade900
       : const Color.fromARGB(255, 242, 245, 247);
+
   Color get optionBackgroundColor => ThemeModeManager.isDark
       ? Colors.grey.shade800
       : const Color.fromARGB(255, 242, 245, 247);

@@ -6,6 +6,7 @@ import 'package:task/ads/bottom_banner_ad.dart';
 import 'package:task/components/button_purchase.dart';
 import 'package:task/models/task.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/theme/manager_theme.dart';
 
 class TaskStatisticsScreen extends StatefulWidget {
   const TaskStatisticsScreen();
@@ -114,7 +115,7 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
-        color: Colors.white,
+        color: contentColor,
       ),
       padding: const EdgeInsets.all(12.0),
       child: Column(
@@ -143,10 +144,18 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
     _fetchTasks();
   }
 
+  Color get backgroundColor => ThemeModeManager.isDark
+      ? Colors.grey.shade900
+      : const Color.fromARGB(255, 240, 245, 249);
+
+  Color get contentColor => ThemeModeManager.isDark
+      ? Colors.grey.shade800
+      : const Color.fromARGB(255, 242, 245, 247);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 240, 245, 249),
+      backgroundColor: backgroundColor,
       // appBar: AppBar(
       //   backgroundColor: const Color.fromARGB(255, 240, 245, 249),
       // ),
@@ -182,7 +191,7 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
-                    color: Colors.white,
+                    color: contentColor,
                   ),
                   height: 300,
                   child: Stack(children: [
@@ -210,7 +219,7 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
-                    color: Colors.white,
+                    color: contentColor,
                   ),
                   height: 250,
                   child: Stack(children: [

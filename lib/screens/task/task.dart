@@ -213,8 +213,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment
-                  .stretch, // Para estender os filhos na horizontal
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 10),
                 TaskTitleColumn(task: widget.task),

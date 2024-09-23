@@ -195,6 +195,12 @@ class AddNewTaskModel extends ConsumerWidget {
   Color get textTitleColor =>
       ThemeModeManager.isDark ? Colors.grey.shade500 : Colors.grey;
 
+  Color get buttonCancelBackground =>
+      ThemeModeManager.isDark ? Colors.grey.shade500 : Colors.white;
+
+  Color get buttonCancelTextColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.blue.shade800;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateProv = ref.watch(dateProvider);
@@ -317,13 +323,13 @@ class AddNewTaskModel extends ConsumerWidget {
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.blue.shade800,
+                    backgroundColor: buttonCancelBackground,
+                    foregroundColor: buttonCancelTextColor,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    side: BorderSide(color: Colors.blue.shade800),
+                    side: BorderSide(color: buttonCancelTextColor),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                   onPressed: () => Navigator.pop(context),
