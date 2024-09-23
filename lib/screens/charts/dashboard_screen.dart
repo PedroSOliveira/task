@@ -123,7 +123,8 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
         children: [
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
+              color: textColor,
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
             ),
@@ -132,6 +133,9 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
           Text(
             label,
             textAlign: TextAlign.center,
+            style: TextStyle(
+              color: textColor,
+            ),
           ),
         ],
       ),
@@ -148,9 +152,11 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
       ? Colors.grey.shade900
       : const Color.fromARGB(255, 240, 245, 249);
 
-  Color get contentColor => ThemeModeManager.isDark
-      ? Colors.grey.shade800
-      : const Color.fromARGB(255, 242, 245, 247);
+  Color get contentColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.white;
+
+  Color get textColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade500 : Colors.black;
 
   @override
   Widget build(BuildContext context) {
@@ -195,9 +201,10 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
                   ),
                   height: 300,
                   child: Stack(children: [
-                    const Text(
+                    Text(
                       "Atividades por categoria",
                       style: TextStyle(
+                        color: textColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -223,9 +230,10 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
                   ),
                   height: 250,
                   child: Stack(children: [
-                    const Text(
+                    Text(
                       "Atividades pendentes",
                       style: TextStyle(
+                        color: textColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

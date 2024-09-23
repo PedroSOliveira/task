@@ -18,7 +18,8 @@ class BaseScreen extends StatefulWidget {
   State<BaseScreen> createState() => _BaseScreenState();
 }
 
-class _BaseScreenState extends State<BaseScreen> with SingleTickerProviderStateMixin {
+class _BaseScreenState extends State<BaseScreen>
+    with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -26,6 +27,9 @@ class _BaseScreenState extends State<BaseScreen> with SingleTickerProviderStateM
       _selectedIndex = index;
     });
   }
+
+  Color get backgroundColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade900 : Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +44,7 @@ class _BaseScreenState extends State<BaseScreen> with SingleTickerProviderStateM
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: backgroundColor,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         currentIndex: _selectedIndex,

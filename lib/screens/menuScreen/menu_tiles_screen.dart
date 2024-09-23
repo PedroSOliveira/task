@@ -89,13 +89,27 @@ class _MenuScreenState extends State<MenuScreen> {
     Navigator.of(context).pushReplacement(pageRoute);
   }
 
+  Color get backgroundColor => ThemeModeManager.isDark
+      ? Colors.grey.shade900
+      : const Color.fromARGB(255, 255, 255, 255);
+
+  Color get contentColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.white;
+
+  Color get textColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade500 : Colors.black;
+
+  Color get textInfoAccountColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade500 : Colors.grey.shade800;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        backgroundColor: backgroundColor,
+        title: Text(
           'Menu',
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(color: textColor, fontSize: 20),
         ),
         leading: IconButton(
           icon: const Icon(
@@ -108,7 +122,7 @@ class _MenuScreenState extends State<MenuScreen> {
           },
         ),
       ),
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -123,14 +137,14 @@ class _MenuScreenState extends State<MenuScreen> {
               style: Theme.of(context)
                   .textTheme
                   .headline6
-                  ?.copyWith(color: Colors.grey.shade800),
+                  ?.copyWith(color: textInfoAccountColor),
             ),
             Text(
               auth.currentUser!.email!,
               style: Theme.of(context)
                   .textTheme
                   .bodyText1
-                  ?.copyWith(color: Colors.grey.shade800),
+                  ?.copyWith(color: textInfoAccountColor),
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -142,10 +156,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       width: 1.0,
                     ),
                   ),
-                  // borderRadius: const BorderRadius.only(
-                  //   bottomLeft: Radius.circular(16.0),
-                  //   bottomRight: Radius.circular(0.0),
-                  // ),
                 ),
                 child: ListView(
                   children: [
@@ -206,12 +216,15 @@ class _MenuItem extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
 
+  Color get contentColor =>
+      ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.white;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
       child: ListTile(
-        tileColor: Colors.white,
+        tileColor: contentColor,
         leading: Icon(
           icon,
           color: Colors.grey.shade400,
