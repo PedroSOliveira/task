@@ -39,7 +39,7 @@ class _BaseScreenState extends State<BaseScreen>
         children: [
           HomePage(),
           // CalendarPage(),
-          // PomodoroScreen(),
+          PomodoroScreen(),
           TaskStatisticsScreen(),
         ],
       ),
@@ -61,10 +61,10 @@ class _BaseScreenState extends State<BaseScreen>
           //   icon: Icon(Icons.calendar_month),
           //   label: 'Calendário',
           // ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.lock_clock_rounded),
-          //   label: 'Pomodoro',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.lock_clock_rounded),
+            label: 'Pomodoro',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
             label: 'Dashboard',
