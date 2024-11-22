@@ -168,9 +168,9 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
   @override
   Widget build(BuildContext context) {
     String formattedDate =
-        DateFormat('dd/MM/yyyy').format(widget.task.date.toDate());
+        DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.task.date));
     String formattedTime =
-        DateFormat('HH:mm').format(widget.task.date.toDate());
+        DateFormat('HH:mm').format(DateTime.parse(widget.task.date));
 
     return WillPopScope(
       onWillPop: () async {

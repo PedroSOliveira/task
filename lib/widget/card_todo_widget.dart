@@ -41,9 +41,9 @@ class CardTodo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateTime = task.date.toDate();
+    // DateTime dateTime = task.date;
 
-    String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+    // String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
 
     return GestureDetector(
       onTap: () {
@@ -82,7 +82,7 @@ class CardTodo extends StatelessWidget {
                       ),
                       const Gap(5),
                       Text(
-                        formattedDate,
+                        task.date,
                         style: TextStyle(
                           color: textColor,
                         ),

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Task {
   late String id;
   late String category;
-  late Timestamp date;
+  late String date;
   late String description;
   late bool isDone;
   late String title;
@@ -47,10 +47,36 @@ class Task {
     };
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'category': category,
+      'date': date,
+      'description': description,
+      'isDone': isDone,
+      'title': title,
+      'user': user,
+      'notes': notes,
+    };
+  }
+
+  factory Task.fromJson(Map<String, dynamic> json) {
+    return Task(
+      id: json['id'],
+      category: json['category'],
+      date: json['date'],
+      description: json['description'],
+      isDone: json['isDone'],
+      user: json['user'],
+      notes: List<Map<String, dynamic>>.from(json['notes'] ?? []),
+      title: json['title'],
+    );
+  }
+
   Task copyWith({
     String? id,
     String? category,
-    Timestamp? date,
+    String? date,
     String? description,
     bool? isDone,
     String? title,

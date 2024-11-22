@@ -13,9 +13,10 @@ import 'package:task/provider/loading_save_task.dart';
 import 'package:task/provider/radio_provider.dart';
 import 'package:task/screens/home/components/category_tile.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
+import 'package:task/utils/generate_id_storage.dart';
 import 'package:task/widget/date_time_widget.dart';
-import 'package:task/widget/radio_widget.dart';
 import 'package:task/widget/text_field_widget.dart';
 import 'package:toastification/toastification.dart';
 
@@ -30,7 +31,7 @@ class AddNewTaskModel extends ConsumerWidget {
 
   final TextEditingController fieldTitleController;
   final TextEditingController fieldDescriptionController;
-  final TaskService _taskService = TaskService();
+  final TaskStorageService taskService = TaskStorageService();
   final selectedCategoryProvider = StateProvider<String>((ref) => '');
   final loading = StateProvider<bool>((ref) => false);
 
@@ -124,7 +125,8 @@ class AddNewTaskModel extends ConsumerWidget {
       } else {
         Task task = convertNewTaskRegister(category, date, time);
 
-        _taskService.addTask(task);
+        task.id = generateUniqueId();
+        TaskStorageService.addTask(task);
 
         showMessageNewTaskRegister(context);
 
@@ -159,7 +161,7 @@ class AddNewTaskModel extends ConsumerWidget {
       title: fieldTitleController.text,
       description: fieldDescriptionController.text,
       category: category,
-      date: adjustedTimestamp,
+      date: date,
       isDone: false,
       notes: [],
       user: user,

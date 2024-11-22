@@ -48,7 +48,7 @@ class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
       setState(() {
         dateTask = newDate;
       });
-      Task updatedTask = widget.task.copyWith(date: combinedTimestamp);
+      Task updatedTask = widget.task.copyWith(date: newDate);
       taskService.updateTask(widget.task.id, updatedTask);
     } catch (e) {
       print('Erro ao atualizar task: $e');
@@ -69,7 +69,7 @@ class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
       setState(() {
         timeTask = newTime;
       });
-      Task updatedTask = widget.task.copyWith(date: adjustedTimestamp);
+      Task updatedTask = widget.task.copyWith(date: newTime);
       taskService.updateTask(widget.task.id, updatedTask);
     } catch (e) {
       print('Erro ao atualizar task: $e');

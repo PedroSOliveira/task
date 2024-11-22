@@ -31,7 +31,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
   void _selectedDateFilter(DateTime selectedDate) {
     List<Task> filteredTasks = allTasks.where((task) {
-      DateTime taskDate = task.date.toDate();
+      DateTime taskDate = DateTime.parse(task.date);
       return taskDate.year == selectedDate.year &&
           taskDate.month == selectedDate.month &&
           taskDate.day == selectedDate.day;
@@ -60,7 +60,7 @@ class _CalendarPageState extends State<CalendarPage> {
     DateTime today = DateTime.now();
 
     List<Task> filteredTasks = tasks.where((task) {
-      DateTime taskDate = task.date.toDate();
+      DateTime taskDate = DateTime.parse(task.date);
       return taskDate.year == today.year &&
           taskDate.month == today.month &&
           taskDate.day == today.day;

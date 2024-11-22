@@ -10,7 +10,7 @@ import 'package:task/screens/calendar/calendar_screen.dart';
 import 'package:task/screens/home/components/category_tile.dart';
 import 'package:task/screens/login/login_screen.dart';
 import 'package:task/screens/menuScreen/menu_tiles_screen.dart';
-import 'package:task/services/task_service.dart';
+import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
 import 'package:task/widget/card_todo_widget.dart';
 
@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  final TaskService _taskService = TaskService();
+  final TaskStorageService _taskService = TaskStorageService();
 
   late List<Task> tasks = [];
 
@@ -101,8 +101,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         isLoading = true;
       });
-      List<Task> fetchedTasks =
-          await _taskService.getTasks(auth.currentUser!.email!);
+      List<Task> fetchedTasks = await TaskStorageService.getTasks();
       List<Task> sortedTasks = sortTasksByIsDone(fetchedTasks);
       setState(() {
         tasks = sortedTasks;
