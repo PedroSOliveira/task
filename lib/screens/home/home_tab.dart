@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -8,7 +7,6 @@ import 'package:task/components/show_model.dart';
 import 'package:task/models/task.dart';
 import 'package:task/screens/calendar/calendar_screen.dart';
 import 'package:task/screens/home/components/category_tile.dart';
-import 'package:task/screens/login/login_screen.dart';
 import 'package:task/screens/menuScreen/menu_tiles_screen.dart';
 import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
@@ -22,12 +20,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  final TaskStorageService _taskService = TaskStorageService();
-
   late List<Task> tasks = [];
 
   late List<Task> allTasks = [];
@@ -76,19 +68,11 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _handleSignOut() async {
-    await _auth.signOut();
-    final pageRoute = MaterialPageRoute(builder: (context) => LoginScreen());
-
-    Navigator.of(context).pushReplacement(pageRoute);
-  }
-
   void navigateToNewTaskScreen() {
     final pageRoute = MaterialPageRoute(
       builder: (context) => AddNewTaskModel(
         fieldTitleController: _fieldTitleController,
         fieldDescriptionController: _fieldDescriptionController,
-        user: auth.currentUser!.email!,
         getTasks: _fetchTasks,
       ),
     );
@@ -183,7 +167,6 @@ class _HomePageState extends State<HomePage> {
                   builder: (context) => AddNewTaskModel(
                     fieldDescriptionController: _fieldDescriptionController,
                     fieldTitleController: _fieldTitleController,
-                    user: auth.currentUser!.email!,
                     getTasks: _fetchTasks,
                   ),
                 );

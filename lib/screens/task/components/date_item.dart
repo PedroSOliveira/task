@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
-import 'package:calendar_date_picker2/calendar_date_picker2.dart' as cdp;
 import 'package:task/models/task.dart';
-import 'package:task/services/task_service.dart';
+import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
 
 class TaskDateTimeColumn extends StatefulWidget {
@@ -37,40 +34,42 @@ class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
     });
   }
 
-  // void _showDatePicker(BuildContext context) async {
-
-  void _updateDateTask(String newDate) {
-    final TaskService taskService = TaskService();
-    final Timestamp combinedTimestamp =
-        convertCombinatedDateAndTime(newDate, widget.time);
-
+  void _updateDateTask(DateTime newDate) {
     try {
+      String dateTimeString =
+          "${DateFormat('dd/MM/yyyy').format(newDate)} ${widget.time}";
+
+      DateFormat('dd/MM/yyyy HH:mm').format(newDate);
+      DateTime parsedDate =
+          DateFormat('dd/MM/yyyy HH:mm').parse(dateTimeString);
+
       setState(() {
-        dateTask = newDate;
+        dateTask = DateFormat('dd/MM/yyyy').format(newDate);
       });
-      Task updatedTask = widget.task.copyWith(date: newDate);
-      taskService.updateTask(widget.task.id, updatedTask);
+
+      Task updatedTask = widget.task.copyWith(date: parsedDate);
+
+      TaskStorageService.updateTask(updatedTask);
     } catch (e) {
       print('Erro ao atualizar task: $e');
     }
   }
 
   void _updateTimeTask(String newTime) {
-    final TaskService taskService = TaskService();
     final Timestamp combinedTimestamp =
         convertCombinatedDateAndTime(dateTask, newTime);
 
-    final convertTime =
+    final DateTime adjustedDateTime =
         combinedTimestamp.toDate().add(const Duration(hours: -3));
-
-    final Timestamp adjustedTimestamp = Timestamp.fromDate(convertTime);
 
     try {
       setState(() {
         timeTask = newTime;
       });
-      Task updatedTask = widget.task.copyWith(date: newTime);
-      taskService.updateTask(widget.task.id, updatedTask);
+
+      Task updatedTask = widget.task.copyWith(date: adjustedDateTime);
+
+      TaskStorageService.updateTask(updatedTask);
     } catch (e) {
       print('Erro ao atualizar task: $e');
     }
@@ -144,7 +143,7 @@ class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
     );
 
     if (pickedDate != null) {
-      _updateDateTask(DateFormat('dd/MM/yyyy').format(pickedDate));
+      _updateDateTask(pickedDate);
     }
   }
 
@@ -266,72 +265,6 @@ class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
               ],
             ),
           ),
-          // const SizedBox(height: 20),
-          // Row(
-          //   children: [
-          //     const Icon(
-          //       Icons.notifications,
-          //       color: Colors.grey,
-          //       size: 20,
-          //     ),
-          //     const SizedBox(width: 10),
-          //     const Text(
-          //       'Lembrete',
-          //       style: TextStyle(
-          //         color: Colors.grey,
-          //         fontSize: 14,
-          //       ),
-          //     ),
-          //     const Spacer(),
-          //     Text(
-          //       widget.date,
-          //       style: const TextStyle(
-          //         fontSize: 14,
-          //       ),
-          //     ),
-          //     const SizedBox(
-          //       width: 5,
-          //     ),
-          //     const Icon(
-          //       Icons.arrow_forward_ios,
-          //       color: Colors.grey,
-          //       size: 15,
-          //     ),
-          //   ],
-          // ),
-          // // const SizedBox(height: 20),
-          // Row(
-          //   children: [
-          //     const Icon(
-          //       Icons.repeat,
-          //       color: Colors.grey,
-          //       size: 20,
-          //     ),
-          //     const SizedBox(width: 10),
-          //     const Text(
-          //       'Repetir',
-          //       style: TextStyle(
-          //         color: Colors.grey,
-          //         fontSize: 14,
-          //       ),
-          //     ),
-          //     const Spacer(),
-          //     Text(
-          //       widget.date,
-          //       style: const TextStyle(
-          //         fontSize: 14,
-          //       ),
-          //     ),
-          //     const SizedBox(
-          //       width: 5,
-          //     ),
-          //     const Icon(
-          //       Icons.arrow_forward_ios,
-          //       color: Colors.grey,
-          //       size: 15,
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     );

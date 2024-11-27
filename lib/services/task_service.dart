@@ -8,11 +8,10 @@ class TaskService {
     try {
       QuerySnapshot querySnapshot = await _firestore
           .collection('todo')
-          .where('user',
-              isEqualTo: email)
+          .where('user', isEqualTo: email)
           .get();
-      List<Task> tasks =
-          querySnapshot.docs.map((doc) => Task.fromSnapshot(doc)).toList();
+      List<Task> tasks = [];
+      // querySnapshot.docs.map((doc) => Task.fromSnapshot(doc)).toList();
       return tasks;
     } catch (e) {
       print('Error fetching tasks: $e');
@@ -22,7 +21,7 @@ class TaskService {
 
   Future<void> addTask(Task task) async {
     try {
-      await _firestore.collection('todo').add(task.toMap());
+      // await _firestore.collection('todo').add(task.toMap());
     } catch (e) {
       print('Error adding task: $e');
     }
@@ -30,7 +29,7 @@ class TaskService {
 
   Future<void> updateTask(String taskId, Task task) async {
     try {
-      await _firestore.collection('todo').doc(taskId).update(task.toMap());
+      // await _firestore.collection('todo').doc(taskId).update(task.toMap());
     } catch (e) {
       print('Error updating task: $e');
     }

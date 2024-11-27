@@ -11,6 +11,7 @@ import 'package:task/screens/task/components/detail_description.dart';
 import 'package:task/screens/task/components/detail_item.dart';
 import 'package:task/screens/task/components/notes_item.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
 import 'package:toastification/toastification.dart';
 
@@ -24,12 +25,11 @@ class TaskDetailsPage extends StatefulWidget {
 }
 
 class _TaskDetailsPageState extends State<TaskDetailsPage> {
-  final TaskService _taskService = TaskService();
   final themeModeManager = ThemeModeManager();
 
   Future<void> deleteTaskById(BuildContext context) async {
     try {
-      await _taskService.deleteTask(widget.task.id);
+      await TaskStorageService.removeTask(widget.task.id);
       backToScreen(context);
       showMessageNewTaskRegister(context);
     } catch (e) {
@@ -167,10 +167,8 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate =
-        DateFormat('dd/MM/yyyy').format(DateTime.parse(widget.task.date));
-    String formattedTime =
-        DateFormat('HH:mm').format(DateTime.parse(widget.task.date));
+    String formattedDate = DateFormat('dd/MM/yyyy').format(widget.task.date);
+    String formattedTime = DateFormat('HH:mm').format(widget.task.date);
 
     return WillPopScope(
       onWillPop: () async {
@@ -189,13 +187,13 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.notifications,
-                      color: Colors.grey,
-                    ),
-                  ),
+                  // IconButton(
+                  //   onPressed: () {},
+                  //   icon: const Icon(
+                  //     Icons.notifications,
+                  //     color: Colors.grey,
+                  //   ),
+                  // ),
                   IconButton(
                     onPressed: () => _showFilterModal(context),
                     icon: Icon(
@@ -226,10 +224,10 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                   task: widget.task,
                 ),
                 const SizedBox(height: 10),
-                const TaskNotesColumn(
-                  notes:
-                      'Esta é uma descrição da tarefa. Aqui você pode adicionar notas e detalhes adicionais sobre a tarefa.',
-                ),
+                // const TaskNotesColumn(
+                //   notes:
+                //       'Esta é uma descrição da tarefa. Aqui você pode adicionar notas e detalhes adicionais sobre a tarefa.',
+                // ),
                 const SizedBox(height: 20),
               ],
             ),

@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
 
 class Task {
   late String id;
   late String category;
-  late String date;
+  late DateTime date;
   late String description;
   late bool isDone;
   late String title;
@@ -21,62 +21,10 @@ class Task {
     required this.notes,
   });
 
-  factory Task.fromSnapshot(DocumentSnapshot snapshot) {
-    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-    return Task(
-      id: snapshot.id,
-      category: data['category'] ?? '',
-      date: data['date'] ?? Timestamp.now(),
-      description: data['description'] ?? '',
-      isDone: data['isDone'] ?? false,
-      title: data['title'] ?? '',
-      user: data['user'] ?? '',
-      notes: List<Map<String, dynamic>>.from(data['notes'] ?? []),
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'category': category,
-      'date': date,
-      'description': description,
-      'isDone': isDone,
-      'title': title,
-      'user': user,
-      'notes': notes,
-    };
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'category': category,
-      'date': date,
-      'description': description,
-      'isDone': isDone,
-      'title': title,
-      'user': user,
-      'notes': notes,
-    };
-  }
-
-  factory Task.fromJson(Map<String, dynamic> json) {
-    return Task(
-      id: json['id'],
-      category: json['category'],
-      date: json['date'],
-      description: json['description'],
-      isDone: json['isDone'],
-      user: json['user'],
-      notes: List<Map<String, dynamic>>.from(json['notes'] ?? []),
-      title: json['title'],
-    );
-  }
-
   Task copyWith({
     String? id,
     String? category,
-    String? date,
+    DateTime? date,
     String? description,
     bool? isDone,
     String? title,
@@ -92,6 +40,32 @@ class Task {
       title: title ?? this.title,
       user: user ?? this.user,
       notes: notes ?? this.notes,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'category': category,
+      'date': date.toIso8601String(),
+      'description': description,
+      'isDone': isDone,
+      'title': title,
+      'user': user,
+      'notes': jsonEncode(notes),
+    };
+  }
+
+  factory Task.fromJson(Map<String, dynamic> json) {
+    return Task(
+      id: json['id'],
+      category: json['category'],
+      date: DateTime.parse(json['date']),
+      description: json['description'],
+      isDone: json['isDone'],
+      title: json['title'],
+      user: json['user'],
+      notes: List<Map<String, dynamic>>.from(jsonDecode(json['notes'] ?? '[]')),
     );
   }
 }

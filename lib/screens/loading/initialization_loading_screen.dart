@@ -77,24 +77,14 @@ class _InitializationLoadingScreenState
 
   void goToLoadAppOpenScreen() async {
     bool isFirstTime = await isFirstTimeUser();
-    FirebaseAuth auth = FirebaseAuth.instance;
 
-    bool user = getUser();
-
-    if (auth.currentUser != null) {
-      final pageRoute = MaterialPageRoute(
-          builder: (context) => BaseScreen(
-                themeModeManager: themeModeManager,
-              ));
-      markFirstTimeUser();
-      Navigator.of(context).pushReplacement(pageRoute);
-    } else {
-      final pageRoute = MaterialPageRoute(builder: (context) => LoginScreen());
-
-      Navigator.of(context).pushReplacement(pageRoute);
-    }
-
-    // MaterialPageRoute(builder: (context) => const LoadingScreen());
+    final pageRoute = MaterialPageRoute(
+      builder: (context) => BaseScreen(
+        themeModeManager: themeModeManager,
+      ),
+    );
+    markFirstTimeUser();
+    Navigator.of(context).pushReplacement(pageRoute);
   }
 
   Future<bool> isFirstTimeUser() async {

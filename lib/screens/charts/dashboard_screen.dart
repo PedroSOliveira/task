@@ -6,6 +6,7 @@ import 'package:task/ads/bottom_banner_ad.dart';
 import 'package:task/components/button_purchase.dart';
 import 'package:task/models/task.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
 
 class TaskStatisticsScreen extends StatefulWidget {
@@ -17,7 +18,6 @@ class TaskStatisticsScreen extends StatefulWidget {
 
 class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
-  final TaskService _taskService = TaskService();
   int totalPendingTasks = 0;
   int totalDoneTasks = 0;
   int totalEntretenimento = 0;
@@ -39,8 +39,7 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
       setState(() {
         // isLoading = true;
       });
-      List<Task> fetchedTasks =
-          await _taskService.getTasks(auth.currentUser!.email!);
+      List<Task> fetchedTasks = await TaskStorageService.getTasks();
 
       getNumberOfCategoryTasks(fetchedTasks);
       getNumberOfCategoryAndPendingTasks(fetchedTasks);
@@ -259,6 +258,14 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
                         ),
                         sectionsSpace: 0,
                         centerSpaceRadius: 40,
+                        // sections: showingSections(
+                        //   10,
+                        //   5,
+                        //   3,
+                        //   5,
+                        //   5,
+                        //   5,
+                        // ),
                         sections: showingSections(
                             totalDoneTasks,
                             totalTrabalhoPending,
@@ -324,12 +331,7 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
       case 4:
         text = 'Pessoal';
         break;
-      // case 5:
-      //   text = 'Sab';
-      //   break;
-      // case 6:
-      //   text = 'Dom';
-      //   break;
+
       default:
         text = '';
         break;

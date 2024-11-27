@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:task/models/task.dart';
 import 'package:task/screens/task/task.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
 
 class CardTodo extends StatelessWidget {
@@ -15,18 +16,23 @@ class CardTodo extends StatelessWidget {
   final VoidCallback getTasks;
 
   void _navigateToTaskDetailsScreen(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return TaskDetailsPage(
-        task: task,
-        getTasks: getTasks,
-      );
-    }));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return TaskDetailsPage(
+            task: task,
+            getTasks: getTasks,
+          );
+        },
+      ),
+    );
   }
 
-  void _toggleTaskCompletion(BuildContext context) {
+  void _toggleTaskCompletion(BuildContext context) async {
     try {
       Task updatedTask = task.copyWith(isDone: !task.isDone);
-      taskService.updateTask(task.id, updatedTask);
+      await TaskStorageService.updateTask(updatedTask);
       getTasks();
     } catch (e) {
       print('Erro ao atualizar task: $e');
@@ -41,9 +47,9 @@ class CardTodo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // DateTime dateTime = task.date;
+    DateTime dateTime = task.date;
 
-    // String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+    String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
 
     return GestureDetector(
       onTap: () {
@@ -82,7 +88,7 @@ class CardTodo extends StatelessWidget {
                       ),
                       const Gap(5),
                       Text(
-                        task.date,
+                        formattedDate,
                         style: TextStyle(
                           color: textColor,
                         ),
@@ -93,12 +99,11 @@ class CardTodo extends StatelessWidget {
               ),
             ),
             Transform.scale(
-              scale:
-                  1.25, // Altere este valor para ajustar o tamanho do checkbox
+              scale: 1.25,
               child: Theme(
                 data: ThemeData(
                   colorScheme: ColorScheme.light(
-                    primary: Colors.grey.shade400, // Cor da borda
+                    primary: Colors.grey.shade400,
                   ),
                 ),
                 child: Checkbox(

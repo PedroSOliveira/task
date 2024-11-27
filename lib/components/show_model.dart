@@ -12,7 +12,6 @@ import 'package:task/provider/date_time_provider.dart';
 import 'package:task/provider/loading_save_task.dart';
 import 'package:task/provider/radio_provider.dart';
 import 'package:task/screens/home/components/category_tile.dart';
-import 'package:task/services/task_service.dart';
 import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
 import 'package:task/utils/generate_id_storage.dart';
@@ -21,12 +20,12 @@ import 'package:task/widget/text_field_widget.dart';
 import 'package:toastification/toastification.dart';
 
 class AddNewTaskModel extends ConsumerWidget {
-  AddNewTaskModel(
-      {super.key,
-      required TextEditingController this.fieldTitleController,
-      required TextEditingController this.fieldDescriptionController,
-      required this.getTasks,
-      required this.user});
+  AddNewTaskModel({
+    super.key,
+    required TextEditingController this.fieldTitleController,
+    required TextEditingController this.fieldDescriptionController,
+    required this.getTasks,
+  });
   final Function getTasks;
 
   final TextEditingController fieldTitleController;
@@ -34,8 +33,6 @@ class AddNewTaskModel extends ConsumerWidget {
   final TaskStorageService taskService = TaskStorageService();
   final selectedCategoryProvider = StateProvider<String>((ref) => '');
   final loading = StateProvider<bool>((ref) => false);
-
-  final String user;
 
   List<String> categories = [
     'Trabalho',
@@ -101,10 +98,8 @@ class AddNewTaskModel extends ConsumerWidget {
     );
   }
 
-  Timestamp convertDateToTimestamp(String date) {
-    final formattedDate = DateFormat('dd/MM/yyyy').parse(date);
-
-    return Timestamp.fromDate(formattedDate);
+  Timestamp convertDateToTimestamp(DateTime date) {
+    return Timestamp.fromDate(date);
   }
 
   Timestamp convertTimeToTimestamp(String time) {
@@ -123,7 +118,12 @@ class AddNewTaskModel extends ConsumerWidget {
       if (isEmptyFields) {
         showMessageWarningEmptyFields(context);
       } else {
-        Task task = convertNewTaskRegister(category, date, time);
+        String dateTimeString = "$date $time";
+
+        DateTime parsedDate =
+            DateFormat('dd/MM/yyyy HH:mm').parse(dateTimeString);
+
+        Task task = convertNewTaskRegister(category, parsedDate, time);
 
         task.id = generateUniqueId();
         TaskStorageService.addTask(task);
@@ -143,7 +143,7 @@ class AddNewTaskModel extends ConsumerWidget {
     }
   }
 
-  Task convertNewTaskRegister(String category, String date, String time) {
+  Task convertNewTaskRegister(String category, DateTime date, String time) {
     final dateTimestamp = convertDateToTimestamp(date);
     final timeTimestamp = convertTimeToTimestamp(time);
 
@@ -164,7 +164,7 @@ class AddNewTaskModel extends ConsumerWidget {
       date: date,
       isDone: false,
       notes: [],
-      user: user,
+      user: '',
       id: '',
     );
 

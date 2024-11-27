@@ -126,27 +126,7 @@ class _MenuScreenState extends State<MenuScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 20),
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(auth.currentUser!.photoURL!),
-            ),
             const SizedBox(height: 10),
-            Text(
-              auth.currentUser!.displayName!,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline6
-                  ?.copyWith(color: textInfoAccountColor),
-            ),
-            Text(
-              auth.currentUser!.email!,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  ?.copyWith(color: textInfoAccountColor),
-            ),
-            const SizedBox(height: 20),
             Expanded(
               child: Container(
                 decoration: const BoxDecoration(
@@ -187,11 +167,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       icon: Icons.star,
                       title: 'Avaliar app',
                       onTap: () => _requestAppRating(context),
-                    ),
-                    _MenuItem(
-                      icon: Icons.logout,
-                      title: 'Logout',
-                      onTap: () => _handleSignOut(context),
                     ),
                   ],
                 ),

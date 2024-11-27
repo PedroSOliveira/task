@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:task/models/task.dart';
 import 'package:task/screens/base/base_screen.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
 import 'package:task/widget/card_todo_widget.dart';
 
@@ -19,8 +20,6 @@ class CalendarPage extends StatefulWidget {
 class _CalendarPageState extends State<CalendarPage> {
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  final TaskService _taskService = TaskService();
-
   late List<Task> tasks = [];
 
   late List<Task> allTasks = [];
@@ -31,7 +30,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
   void _selectedDateFilter(DateTime selectedDate) {
     List<Task> filteredTasks = allTasks.where((task) {
-      DateTime taskDate = DateTime.parse(task.date);
+      DateTime taskDate = task.date;
       return taskDate.year == selectedDate.year &&
           taskDate.month == selectedDate.month &&
           taskDate.day == selectedDate.day;
@@ -60,7 +59,7 @@ class _CalendarPageState extends State<CalendarPage> {
     DateTime today = DateTime.now();
 
     List<Task> filteredTasks = tasks.where((task) {
-      DateTime taskDate = DateTime.parse(task.date);
+      DateTime taskDate = task.date;
       return taskDate.year == today.year &&
           taskDate.month == today.month &&
           taskDate.day == today.day;
@@ -74,8 +73,7 @@ class _CalendarPageState extends State<CalendarPage> {
       setState(() {
         isLoading = true;
       });
-      List<Task> fetchedTasks =
-          await _taskService.getTasks(auth.currentUser!.email!);
+      List<Task> fetchedTasks = await TaskStorageService.getTasks();
       List<Task> sortedTasks = sortTasksByIsDone(fetchedTasks);
       List<Task> todayTasks = await filterTasksByToday(sortedTasks);
 
