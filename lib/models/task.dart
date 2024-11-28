@@ -9,6 +9,7 @@ class Task {
   late String title;
   late String user;
   late List<Map<String, dynamic>> notes;
+  late bool isNotify;
 
   Task({
     required this.id,
@@ -19,6 +20,7 @@ class Task {
     required this.title,
     required this.user,
     required this.notes,
+    this.isNotify = false,
   });
 
   Task copyWith({
@@ -30,6 +32,7 @@ class Task {
     String? title,
     String? user,
     List<Map<String, dynamic>>? notes,
+    bool? isNotify,
   }) {
     return Task(
       id: id ?? this.id,
@@ -40,6 +43,7 @@ class Task {
       title: title ?? this.title,
       user: user ?? this.user,
       notes: notes ?? this.notes,
+      isNotify: isNotify ?? this.isNotify,
     );
   }
 
@@ -53,6 +57,7 @@ class Task {
       'title': title,
       'user': user,
       'notes': jsonEncode(notes),
+      'isNotify': isNotify,
     };
   }
 
@@ -66,6 +71,7 @@ class Task {
       title: json['title'],
       user: json['user'],
       notes: List<Map<String, dynamic>>.from(jsonDecode(json['notes'] ?? '[]')),
+      isNotify: json['isNotify'] ?? false,
     );
   }
 }
