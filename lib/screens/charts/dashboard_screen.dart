@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:task/ads/bottom_banner_ad.dart';
-import 'package:task/components/button_purchase.dart';
 import 'package:task/models/task.dart';
-import 'package:task/services/task_service.dart';
 import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
 
@@ -17,7 +14,6 @@ class TaskStatisticsScreen extends StatefulWidget {
 }
 
 class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
-  final FirebaseAuth auth = FirebaseAuth.instance;
   int totalPendingTasks = 0;
   int totalDoneTasks = 0;
   int totalEntretenimento = 0;
@@ -34,10 +30,12 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
   int totalEsportePending = 0;
   int totalViagemPending = 0;
 
+  bool isLoading = false;
+
   Future<void> _fetchTasks() async {
     try {
       setState(() {
-        // isLoading = true;
+        isLoading = true;
       });
       List<Task> fetchedTasks = await TaskStorageService.getTasks();
 
@@ -52,7 +50,7 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
       print('Error fetching tasks: $e');
     } finally {
       setState(() {
-        // isLoading = false;
+        isLoading = false;
       });
     }
   }
@@ -101,14 +99,23 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
     int totalPessoalTaks = tasks
         .where((task) => !task.isDone && task.category == 'Pessoal')
         .length;
+    print(totalTrabalhoTaks);
     setState(() {
       totalTrabalhoPending = totalTrabalhoTaks;
+      totalEsportePending = totalEsporteTaks;
       totalEstudoPending = totalEstudoTaks;
       totalViagemPending = totalViagemTaks;
-      totalEsportePending = totalEsporteTaks;
       totalPessoalPending = totalPessoalTaks;
     });
   }
+
+  //  setState(() {
+  //     totalTrabalhoPending = totalTrabalhoTaks > 0 ? totalTrabalhoTaks : 1;
+  //     totalTrabalhoPending = totalEsporteTaks > 0 ? totalEsporteTaks : 1;
+  //     totalEstudoPending = totalEstudoTaks > 0 ? totalEstudoTaks : 1;
+  //     totalViagemPending = totalViagemTaks > 0 ? totalViagemTaks : 1;
+  //     totalPessoalPending = totalPessoalTaks > 0 ? totalPessoalTaks : 1;
+  //   });
 
   Widget _buildStatisticWidget(String value, String label) {
     return Container(
@@ -236,45 +243,50 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    PieChart(
-                      PieChartData(
-                        pieTouchData: PieTouchData(
-                          touchCallback:
-                              (FlTouchEvent event, pieTouchResponse) {
-                            // setState(() {
-                            //   if (!event.isInterestedForInteractions ||
-                            //       pieTouchResponse == null ||
-                            //       pieTouchResponse.touchedSection == null) {
-                            //     touchedIndex = -1;
-                            //     return;
-                            //   }
-                            //   touchedIndex = pieTouchResponse
-                            //       .touchedSection!.touchedSectionIndex;
-                            // });
-                          },
-                        ),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 40,
-                        // sections: showingSections(
-                        //   10,
-                        //   5,
-                        //   3,
-                        //   5,
-                        //   5,
-                        //   5,
-                        // ),
-                        sections: showingSections(
-                            totalDoneTasks,
-                            totalTrabalhoPending,
-                            totalEstudoPending,
-                            totalViagemPending,
-                            totalEsportePending,
-                            totalPessoalPending),
-                      ),
-                    ),
+                    !isLoading
+                        ? PieChart(
+                            PieChartData(
+                              pieTouchData: PieTouchData(),
+                              borderData: FlBorderData(
+                                show: false,
+                              ),
+                              sectionsSpace: 0,
+                              centerSpaceRadius: 40,
+                              // sections: showingSections(
+                              //   1,
+                              //   10,
+                              //   1,
+                              //   1,
+                              //   1,
+                              //   1,
+                              // ),
+                              sections: showingSections(
+                                totalDoneTasks >= 1 ? totalDoneTasks : 1,
+                                totalTrabalhoPending,
+                                totalEstudoPending >= 1
+                                    ? totalEstudoPending
+                                    : 1,
+                                totalViagemPending >= 1
+                                    ? totalViagemPending
+                                    : 1,
+                                totalEsportePending >= 1
+                                    ? totalEsportePending
+                                    : 1,
+                                totalPessoalPending >= 1
+                                    ? totalPessoalPending
+                                    : 1,
+                              ),
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: const Center(
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.blue),
+                              ),
+                            ),
+                          ),
                   ]),
                 ),
               ],
@@ -445,16 +457,16 @@ class BarChartSample3State extends State<BarChartSample3> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 240, 245, 249),
       ),
-      body: AspectRatio(
+      body: const AspectRatio(
         aspectRatio: 1,
         child: Stack(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  const Text(
+                  Text(
                     'Mingguan',
                     style: TextStyle(
                       color: Colors.blue,
@@ -462,7 +474,7 @@ class BarChartSample3State extends State<BarChartSample3> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 4,
                   ),
                   Text(
@@ -473,16 +485,16 @@ class BarChartSample3State extends State<BarChartSample3> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 38,
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: EdgeInsets.symmetric(horizontal: 8),
                       // child: TaskStatisticsScreen(),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 12,
                   ),
                 ],

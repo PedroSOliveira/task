@@ -28,8 +28,9 @@ class _BaseScreenState extends State<BaseScreen>
     });
   }
 
-  Color get backgroundColor =>
-      ThemeModeManager.isDark ? Colors.grey.shade900 : Colors.white;
+  Color get backgroundColor => ThemeModeManager.isDark
+      ? Colors.grey.shade900
+      : const Color.fromARGB(255, 242, 245, 247);
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +46,7 @@ class _BaseScreenState extends State<BaseScreen>
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: backgroundColor,
+        elevation: 0,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         currentIndex: _selectedIndex,

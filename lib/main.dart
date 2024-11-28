@@ -34,12 +34,11 @@ class _MyAppState extends State<MyApp> {
     });
 
     // InterstitialWithMediation.instance.load();
-      Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
     themeMode = themeModeManager.themeMode;
   }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
@@ -48,7 +47,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
         ),
         home: const InitializationLoadingScreen(),
@@ -58,9 +57,9 @@ class _MyAppState extends State<MyApp> {
         ],
         supportedLocales: const [Locale('pt', 'BR')],
         routes: {
-        '/terms': (context) => TermsScreen(),
-        '/privacy': (context) => PrivacyScreen(),
-      },
+          '/terms': (context) => TermsScreen(),
+          '/privacy': (context) => PrivacyScreen(),
+        },
       ),
     );
   }

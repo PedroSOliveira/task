@@ -76,7 +76,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
     );
   }
 
-  void _showFilterModal(BuildContext context) {
+  void _showDeleteTaskModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -195,7 +195,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                   //   ),
                   // ),
                   IconButton(
-                    onPressed: () => _showFilterModal(context),
+                    onPressed: () => _showDeleteTaskModal(context),
                     icon: Icon(
                       Icons.delete_rounded,
                       color: Colors.red.shade300,

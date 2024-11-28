@@ -99,6 +99,10 @@ class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
     return combinedTimestamp;
   }
 
+  Color get backgroundColor => ThemeModeManager.isDark
+      ? Colors.grey.shade800
+      : const Color.fromARGB(255, 240, 245, 249);
+
   void _showDatePicker(BuildContext context) async {
     final DateTime? pickedDate = await showModalBottomSheet(
       context: context,
@@ -109,11 +113,11 @@ class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
             topRight: Radius.circular(20),
           ),
           child: Container(
-            color: const Color.fromARGB(255, 240, 245, 249),
+            color: backgroundColor,
             child: Theme(
               data: ThemeData.light().copyWith(
                 colorScheme: const ColorScheme.light(
-                  primary: Colors.blue, // Define a cor do texto e dos ícones
+                  primary: Colors.blue,
                 ),
               ),
               child: Padding(
@@ -129,7 +133,6 @@ class _TaskDateTimeColumnState extends State<TaskDateTimeColumn> {
                         Navigator.pop(context, newDate);
                       },
                     ),
-                    const SizedBox(height: 20),
                     const SizedBox(
                       height: 20,
                     )

@@ -109,9 +109,15 @@ class _InitializationLoadingScreenState
               height: MediaQuery.of(context).size.height,
               color: Colors.white60),
           Center(
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: const Center(child: CircularProgressIndicator())))
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );

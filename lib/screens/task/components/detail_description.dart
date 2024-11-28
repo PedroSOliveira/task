@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task/models/task.dart';
 import 'package:task/services/task_service.dart';
+import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
 
 class TaskDescriptionColumn extends StatefulWidget {
@@ -15,7 +16,6 @@ class TaskDescriptionColumn extends StatefulWidget {
 class _TaskDescriptionColumnState extends State<TaskDescriptionColumn> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  final TaskService taskService = TaskService();
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _TaskDescriptionColumnState extends State<TaskDescriptionColumn> {
   void _updateDescriptionTask() {
     try {
       Task updatedTask = widget.task.copyWith(description: _controller.text);
-      taskService.updateTask(widget.task.id, updatedTask);
+      TaskStorageService.updateTask(updatedTask);
     } catch (e) {
       print('Erro ao atualizar task: $e');
     }

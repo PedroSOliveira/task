@@ -44,6 +44,9 @@ class AddNewTaskModel extends ConsumerWidget {
 
   String selectedCategory = 'Trabalho';
 
+  final format = DateFormat('dd/MM/yyyy');
+  final formatTime = DateFormat('HH:mm');
+
   void showMessageNewTaskRegister(BuildContext context) {
     toastification.show(
       context: context,
@@ -68,6 +71,17 @@ class AddNewTaskModel extends ConsumerWidget {
       pauseOnHover: true,
       dragToClose: true,
     );
+  }
+
+  void resetFields(WidgetRef ref) {
+    fieldTitleController.clear();
+    fieldDescriptionController.clear();
+    ref
+        .read(dateProvider.notifier)
+        .update((state) => format.format(DateTime.now()));
+    ref
+        .read(timeProvider.notifier)
+        .update((state) => formatTime.format(DateTime.now()));
   }
 
   void showMessageWarningEmptyFields(BuildContext context) {
@@ -135,6 +149,8 @@ class AddNewTaskModel extends ConsumerWidget {
         getTasks();
 
         closeModal(context);
+
+        resetFields(ref);
       }
     } catch (error) {
       print(error);
@@ -202,6 +218,10 @@ class AddNewTaskModel extends ConsumerWidget {
 
   Color get buttonCancelTextColor =>
       ThemeModeManager.isDark ? Colors.grey.shade800 : Colors.blue.shade800;
+
+  Color get backgroundCalendarColor => ThemeModeManager.isDark
+      ? Colors.grey.shade800
+      : const Color.fromARGB(255, 240, 245, 249);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -287,25 +307,50 @@ class AddNewTaskModel extends ConsumerWidget {
                   onTap: () async {
                     final getValue = await showDatePicker(
                       // locale: const Locale("pt", "BR"),
+                      builder: (BuildContext context, Widget? child) {
+                        return Container(
+                          color: backgroundCalendarColor,
+                          child: Theme(
+                            data: ThemeData.light().copyWith(
+                              colorScheme: const ColorScheme.light(
+                                primary: Colors.blue,
+                              ),
+                            ),
+                            child: child!,
+                          ),
+                        );
+                      },
                       context: context,
                       initialDate: DateTime.now(),
                       firstDate: DateTime(2021),
                       lastDate: DateTime(2025),
                     );
                     if (getValue != null) {
-                      final format = DateFormat('dd/MM/yyyy');
+                      // final format = DateFormat('dd/MM/yyyy');
                       ref
                           .read(dateProvider.notifier)
                           .update((state) => format.format(getValue));
                     }
                   }),
-              Gap(22),
+              const Gap(22),
               DateTimeWidget(
                 titleText: 'Hora',
                 valueText: ref.watch(timeProvider),
                 icon: CupertinoIcons.clock,
                 onTap: () async {
                   final getTime = await showTimePicker(
+                    builder: (BuildContext context, Widget? child) {
+                      return Theme(
+                        data: ThemeData.light().copyWith(
+                          colorScheme: const ColorScheme.light(
+                            primary: Colors.blue,
+                            secondary: Colors.white,
+                            inversePrimary: Colors.white,
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    },
                     context: context,
                     initialTime: TimeOfDay.now(),
                   );
