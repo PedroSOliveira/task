@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task/ads/interstitial_with_mediation.dart';
 import 'package:task/firebase_options.dart';
@@ -49,8 +50,9 @@ class _InitializationLoadingScreenState
 
     await Future.wait([
       FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true),
-      // OneSignal.shared.setAppId("980428f3-3aca-47bb-b4b5-5b4cd00ef2c9")
     ]);
+
+    OneSignal.initialize("cdbf7b13-d2a5-4c53-a09b-b7cf38aea267");
 
     InterstitialWithMediation.instance.load();
     goToLoadAppOpenScreen();
