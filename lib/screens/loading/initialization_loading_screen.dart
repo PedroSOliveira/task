@@ -6,6 +6,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task/ads/interstitial_with_mediation.dart';
 import 'package:task/firebase_options.dart';
+import 'package:task/purchase/remote_config_service.dart';
 import 'package:task/screens/base/base_screen.dart';
 import 'package:task/services/user_service.dart';
 
@@ -51,6 +52,8 @@ class _InitializationLoadingScreenState
     await Future.wait([
       FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true),
     ]);
+
+    await RemoteConfigService().initialize();
 
     OneSignal.initialize("cdbf7b13-d2a5-4c53-a09b-b7cf38aea267");
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:task/ads/bottom_banner_ad.dart';
 import 'package:task/models/task.dart';
+import 'package:task/purchase/remote_config_service.dart';
 import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
 
@@ -166,6 +167,8 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isShowAnnouncement = RemoteConfigService().isShowAnnouncement;
+
     return Scaffold(
       backgroundColor: backgroundColor,
       // appBar: AppBar(
@@ -180,7 +183,9 @@ class _TaskStatisticsScreenState extends State<TaskStatisticsScreen> {
                 // CardPurchase(),
                 const Gap(20),
 
-                const BottomBannerAd(),
+                isShowAnnouncement
+                    ? const BottomBannerAd()
+                    : const SizedBox.shrink(),
 
                 const Gap(8),
                 Row(

@@ -6,6 +6,7 @@ import 'package:task/ads/bottom_banner_ad.dart';
 import 'package:task/ads/interstitial_with_mediation.dart';
 import 'package:task/components/show_model.dart';
 import 'package:task/models/task.dart';
+import 'package:task/purchase/remote_config_service.dart';
 import 'package:task/screens/calendar/calendar_screen.dart';
 import 'package:task/screens/home/components/category_tile.dart';
 import 'package:task/screens/menuScreen/menu_tiles_screen.dart';
@@ -170,8 +171,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isShowAnnouncement = RemoteConfigService().isShowAnnouncement;
+
     return Scaffold(
-      bottomNavigationBar: const BottomBannerAd(),
+      bottomNavigationBar:
+          isShowAnnouncement ? const BottomBannerAd() : const SizedBox.shrink(),
       backgroundColor: backgroundColor,
       floatingActionButton: isLoading
           ? null
@@ -267,7 +271,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const Gap(20),
-              const BottomBannerAd(),
+              isShowAnnouncement
+                  ? const BottomBannerAd()
+                  : const SizedBox.shrink(),
               const Gap(20),
               isLoading
                   ? Column(

@@ -11,6 +11,7 @@ import 'package:task/models/task.dart';
 import 'package:task/provider/date_time_provider.dart';
 import 'package:task/provider/loading_save_task.dart';
 import 'package:task/provider/radio_provider.dart';
+import 'package:task/purchase/remote_config_service.dart';
 import 'package:task/screens/home/components/category_tile.dart';
 import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
@@ -33,6 +34,8 @@ class AddNewTaskModel extends ConsumerWidget {
   final TaskStorageService taskService = TaskStorageService();
   final selectedCategoryProvider = StateProvider<String>((ref) => '');
   final loading = StateProvider<bool>((ref) => false);
+
+  bool isShowAnnouncement = RemoteConfigService().isShowAnnouncement;
 
   List<String> categories = [
     'Trabalho',
@@ -144,7 +147,9 @@ class AddNewTaskModel extends ConsumerWidget {
 
         showMessageNewTaskRegister(context);
 
-        await InterstitialWithMediation.instance.show();
+        if (isShowAnnouncement) {
+          await InterstitialWithMediation.instance.show();
+        }
 
         getTasks();
 

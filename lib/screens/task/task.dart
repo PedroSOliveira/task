@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:task/ads/bottom_banner_ad.dart';
 import 'package:task/ads/interstitial_with_mediation.dart';
 import 'package:task/models/task.dart';
+import 'package:task/purchase/remote_config_service.dart';
 import 'package:task/screens/base/base_screen.dart';
 
 import 'package:task/screens/task/components/date_item.dart';
@@ -170,9 +171,13 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
     String formattedDate = DateFormat('dd/MM/yyyy').format(widget.task.date);
     String formattedTime = DateFormat('HH:mm').format(widget.task.date);
 
+    bool isShowAnnouncement = RemoteConfigService().isShowAnnouncement;
+
     return WillPopScope(
       onWillPop: () async {
-        await InterstitialWithMediation.instance.show();
+        if (isShowAnnouncement) {
+          await InterstitialWithMediation.instance.show();
+        }
         widget.getTasks();
         return true;
       },
