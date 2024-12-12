@@ -55,8 +55,7 @@ class TermsScreen extends StatelessWidget {
               ),
             )
             ..loadRequest(
-              Uri.parse(
-                  'https://seven-software.web.app/terms/simulado-enem.html'),
+              Uri.parse('https://seven-software.web.app/terms/task.html'),
             ),
         ),
       ),

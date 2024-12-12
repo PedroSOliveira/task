@@ -211,13 +211,19 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
             )
           ],
         ),
-        bottomNavigationBar: const BottomBannerAd(),
+        bottomNavigationBar: isShowAnnouncement
+            ? const BottomBannerAd()
+            : const SizedBox.shrink(),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                isShowAnnouncement
+                    ? const BottomBannerAd()
+                    : const SizedBox.shrink(),
+
                 const SizedBox(height: 10),
                 TaskTitleColumn(task: widget.task),
                 const SizedBox(height: 10),
@@ -229,6 +235,7 @@ class _TaskDetailsPageState extends State<TaskDetailsPage> {
                   task: widget.task,
                 ),
                 const SizedBox(height: 10),
+
                 // const TaskNotesColumn(
                 //   notes:
                 //       'Esta é uma descrição da tarefa. Aqui você pode adicionar notas e detalhes adicionais sobre a tarefa.',

@@ -55,8 +55,7 @@ class PrivacyScreen extends StatelessWidget {
               ),
             )
             ..loadRequest(
-              Uri.parse(
-                  'https://seven-software.web.app/privacy/simulado-enem.html'),
+              Uri.parse('https://seven-software.web.app/privacy/task.html'),
             ),
         ),
       ),

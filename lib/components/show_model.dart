@@ -12,7 +12,9 @@ import 'package:task/provider/date_time_provider.dart';
 import 'package:task/provider/loading_save_task.dart';
 import 'package:task/provider/radio_provider.dart';
 import 'package:task/purchase/remote_config_service.dart';
+import 'package:task/screens/base/base_screen.dart';
 import 'package:task/screens/home/components/category_tile.dart';
+import 'package:task/screens/home/home_tab.dart';
 import 'package:task/services/task_storage_service.dart';
 import 'package:task/theme/manager_theme.dart';
 import 'package:task/utils/generate_id_storage.dart';
@@ -151,11 +153,9 @@ class AddNewTaskModel extends ConsumerWidget {
           await InterstitialWithMediation.instance.show();
         }
 
-        getTasks();
-
         closeModal(context);
-
         resetFields(ref);
+        getTasks();
       }
     } catch (error) {
       print(error);
@@ -193,7 +193,15 @@ class AddNewTaskModel extends ConsumerWidget {
   }
 
   void closeModal(context) {
+    final themeModeManager = ThemeModeManager();
+
     Navigator.of(context).pop();
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => BaseScreen(
+                  themeModeManager: themeModeManager,
+                )));
   }
 
   void _selectedOptionCategory(WidgetRef ref, String category) {

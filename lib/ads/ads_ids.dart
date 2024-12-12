@@ -7,7 +7,7 @@ abstract class AdsIds {
   static const _testInterstitial = "ca-app-pub-3940256099942544/1033173712";
   static const _testAppOpen = "ca-app-pub-3855206224550598/8356856806";
 
-  static const _androidBanner = "ca-app-pub-1837125269900681/3277879031";
+  static const _androidBanner = "ca-app-pub-1837125269900681/2749184392";
   static const _iosBanner = "ca-app-pub-1837125269900681/3254738743";
 
   static get bottomBannerAdId {
@@ -19,7 +19,7 @@ abstract class AdsIds {
   }
 
   static const _androidMediumRetangleBanner =
-      "ca-app-pub-1837125269900681/9310888626";
+      "ca-app-pub-1837125269900681/2226440217";
   static const _iosMediumRetangleBanner =
       "ca-app-pub-1837125269900681/4513385068";
 
@@ -35,9 +35,9 @@ abstract class AdsIds {
 
   static const _iosInterstitial = "ca-app-pub-1837125269900681/5880902080";
   static const _androidInterstitialWithMediation =
-      "ca-app-pub-1837125269900681/4142322424";
+      "ca-app-pub-1837125269900681/2164427708";
   static const _androidInterstitialWithoutMediation =
-      "ca-app-pub-1837125269900681/4646105837";
+      "ca-app-pub-1837125269900681/2164427708";
   static get interstitialAdId =>
       Platform.isAndroid ? _androidInterstitialWithMediation : _iosInterstitial;
 

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:task/config/custom_colors.dart';
 import 'package:task/theme/manager_theme.dart';
 
-
 import 'package:webview_flutter/webview_flutter.dart';
 
 @override
@@ -29,7 +28,7 @@ class TermsOnBoardScreen extends StatelessWidget {
         title: 'Políticas de Privacidade',
         home: Scaffold(
           appBar: AppBar(
-          backgroundColor: Colors.white,
+            backgroundColor: Colors.white,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -71,8 +70,7 @@ class TermsOnBoardScreen extends StatelessWidget {
                 ),
               )
               ..loadRequest(
-                Uri.parse(
-                    'https://seven-software.web.app/terms/simulado-enem.html'),
+                Uri.parse('https://seven-software.web.app/terms/task.html'),
               ),
           ),
         ),

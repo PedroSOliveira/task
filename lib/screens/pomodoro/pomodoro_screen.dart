@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:task/ads/bottom_banner_ad.dart';
+import 'package:task/purchase/remote_config_service.dart';
 import 'dart:async';
 
 import 'package:task/theme/manager_theme.dart';
@@ -53,7 +56,11 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isShowAnnouncement = RemoteConfigService().isShowAnnouncement;
+
     return Scaffold(
+      bottomNavigationBar:
+          isShowAnnouncement ? const BottomBannerAd() : const SizedBox.shrink(),
       backgroundColor: backgroundColor,
       body: Center(
         child: Column(
@@ -62,7 +69,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
             Stack(
               alignment: Alignment.center,
               children: [
-                Container(
+                SizedBox(
                   width: 300,
                   height: 300,
                   child: CircularProgressIndicator(

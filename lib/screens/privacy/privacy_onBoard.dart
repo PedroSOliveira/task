@@ -31,7 +31,7 @@ class PrivacyOnBoardScreen extends StatelessWidget {
         title: 'Políticas de Privacidade',
         home: Scaffold(
           appBar: AppBar(
-          backgroundColor: Colors.white,
+            backgroundColor: Colors.white,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -73,8 +73,7 @@ class PrivacyOnBoardScreen extends StatelessWidget {
                 ),
               )
               ..loadRequest(
-                Uri.parse(
-                    'https://seven-software.web.app/privacy/simulado-enem.html'),
+                Uri.parse('https://seven-software.web.app/privacy/task.html'),
               ),
           ),
         ),
