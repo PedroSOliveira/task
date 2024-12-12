@@ -1,15 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:task/models/task.dart';
 
 class TaskService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<List<Task>> getTasks(String email) async {
     try {
-      QuerySnapshot querySnapshot = await _firestore
-          .collection('todo')
-          .where('user', isEqualTo: email)
-          .get();
+      // QuerySnapshot querySnapshot = await _firestore
+      //     .collection('todo')
+      //     .where('user', isEqualTo: email)
+      //     .get();
       List<Task> tasks = [];
       // querySnapshot.docs.map((doc) => Task.fromSnapshot(doc)).toList();
       return tasks;
@@ -37,7 +37,7 @@ class TaskService {
 
   Future<void> deleteTask(String taskId) async {
     try {
-      await _firestore.collection('todo').doc(taskId).delete();
+      // await _firestore.collection('todo').doc(taskId).delete();
     } catch (e) {
       print('Error deleting task: $e');
     }

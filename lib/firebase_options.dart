@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:928212580002:android:eba3deb573bcc9b95609fb',
     messagingSenderId: '928212580002',
     projectId: 'task-84c92',
-    storageBucket: 'task-84c92.appspot.com',
+    storageBucket: 'task-84c92.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -62,9 +62,10 @@ class DefaultFirebaseOptions {
     appId: '1:928212580002:ios:15718bf13cc383745609fb',
     messagingSenderId: '928212580002',
     projectId: 'task-84c92',
-    storageBucket: 'task-84c92.appspot.com',
+    storageBucket: 'task-84c92.firebasestorage.app',
     androidClientId: '928212580002-cfs633psts0oem3gk8p0490ii5t104o0.apps.googleusercontent.com',
     iosClientId: '928212580002-ei3rvegh0m8d38np45h6l96svr50k7pe.apps.googleusercontent.com',
     iosBundleId: 'com.seven.task',
   );
+
 }

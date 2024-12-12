@@ -1,3 +1,4 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -26,7 +27,11 @@ class _HomePageState extends State<HomePage> {
 
   final themeModeManager = ThemeModeManager();
 
+  final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
+
   bool isLoading = false;
+
+  bool isShowAnnouncement = false;
 
   final TextEditingController _fieldTitleController = TextEditingController();
   final TextEditingController _fieldDescriptionController =
@@ -101,6 +106,19 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> fetchRemoteConfig() async {
+    try {
+      await _remoteConfig.fetchAndActivate();
+      bool isEnabledAnnouncement = _remoteConfig.getBool('isShowAnnouncement');
+
+      setState(() {
+        isShowAnnouncement = isEnabledAnnouncement;
+      });
+    } catch (exception) {
+      print('Erro ao buscar configuração remota: $exception');
+    }
+  }
+
   void toggleTheme() {
     setState(() {
       themeModeManager.themeMode = themeModeManager.themeMode == ThemeMode.light
@@ -132,6 +150,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _fetchTasks();
+    fetchRemoteConfig();
   }
 
   Color get backgroundColor => ThemeModeManager.isDark

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -22,7 +21,7 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   final InAppReview inAppReview = InAppReview.instance;
-  FirebaseAuth auth = FirebaseAuth.instance;
+  // FirebaseAuth auth = FirebaseAuth.instance;
 
   final String urlAndroid =
       'https://play.google.com/store/apps/details?id=com.seven.task';
@@ -83,7 +82,7 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   void _handleSignOut(BuildContext context) async {
-    await auth.signOut();
+    // await auth.signOut();
     final pageRoute = MaterialPageRoute(builder: (context) => LoginScreen());
 
     Navigator.of(context).pushReplacement(pageRoute);

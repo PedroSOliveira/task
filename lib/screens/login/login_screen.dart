@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:task/controller/google_auth_controller.dart';
@@ -14,25 +13,25 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
   final themeModeManager = ThemeModeManager();
 
-  User? _user;
+  // User? _user;
 
   @override
   void initState() {
     // TODO: implement initState
-    _auth.authStateChanges().listen((event) {
-      setState(() {
-        _user = event;
-      });
-    });
+    // _auth.authStateChanges().listen((event) {
+    //   setState(() {
+    //     _user = event;
+    //   });
+    // });
     super.initState();
   }
 
   void _handleGoogleSignin(context) async {
     try {
-      await GoogleAuthController().signInWithGoogle();
+      // await GoogleAuthController().signInWithGoogle();
       // Faça login com o Google
       // UserCredential userCredential =
       //     await GoogleAuthController().signInWithGoogle();
